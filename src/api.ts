@@ -50,9 +50,10 @@ interface Idata {
     with_people?: string,
     "runtume.gte" ?: number,
     "runtime.lte" ?:number,
-    with_genres? : string,
+    with_genres? : any,
 }
+
 export const movieDiscover = (page?:number,data?:Idata) => {
-    console.log(data);
-    return movies.get(`discover/movie`,{params:{...data,page}})
+    const with_genres =  (data && data.with_genres && data?.with_genres.map( (x:any) => x.id).join(',')) || ''
+    return movies.get(`discover/movie`,{params:{...data,page,with_genres}})
 }
