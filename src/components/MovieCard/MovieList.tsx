@@ -1,9 +1,21 @@
 import React, { DragEvent } from 'react'
 import Draggable, { DraggableEvent } from 'react-draggable';
 import {Link} from 'react-router-dom'
-function MovieList({movies,addToWatchListAC,getMovieThunk}:any) {
+import styled from 'styled-components'
+import MovieItem from './MovieItem'
+
+const Centered = styled.div`
+    width:100vw;
+    height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    overflow:hidden;
+`
+
+function MovieList({movies,addToWatchListAC,getMovieThunk,remove}:any) {
     
-    const list = movies.map((x:any)=> <MovieItem key={x.id} {...x} watchLater={addToWatchListAC} />)   
+    const list = movies.map((x:any)=> <MovieItem key={x.id} {...x} remove={remove} watchLater={addToWatchListAC} />)   
     
     return (
         <div>
@@ -11,7 +23,9 @@ function MovieList({movies,addToWatchListAC,getMovieThunk}:any) {
                 <Link to="/watch-later">later</Link>
                 <Link to="/filters">filters</Link>
             </div>
-            {list}
+            {/* <Centered> */}
+                {list}
+            {/* </Centered> */}
         </div>
     )
 }
@@ -19,53 +33,3 @@ function MovieList({movies,addToWatchListAC,getMovieThunk}:any) {
 export default MovieList
 
 
-
-interface IMovieItem {
-    id:number,
-    title:string,
-    poster_path:string,
-    overview:string,
-    watchLater: any
-}
-
-const MovieItem = ({id,title,watchLater,poster_path,overview}:IMovieItem) => {
-    console.log(poster_path)
-    const onStart = (e:DraggableEvent,ui:any) => {
-        console.log(ui)
-    }
-    const onDrag = (e:DraggableEvent,ui:any) => {
-        console.log(ui)
-    }
-    const onStop = (e:DraggableEvent,ui:any) => {
-        watchLater({id,title,overview});
-    }
-    const dragEvents = {
-        onStart,
-        onDrag,
-        onStop
-    }
-    const imgPath = `http://image.tmdb.org/t/p/w400${poster_path}`
-    return (
-            <>
-
-              <Draggable {...dragEvents}  axis="x" position={{x:0,y:0}} allowAnyClick={true}>
-                 <div >
-                     <div >
-                       <img src={imgPath} alt={title} />
-                       <span style={{position:"absolute",bottom:"1rem",left:"1rem",color:"white"}}>
-                         {title}
-                       </span>
-                     </div>
-                     <p> 
-                       {overview} 
-                     </p>
-    
-               
-                 </div>
-              </Draggable>
-             
-            </>
-
-    
-      )
-}

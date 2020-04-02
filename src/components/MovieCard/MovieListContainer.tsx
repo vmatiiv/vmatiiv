@@ -1,22 +1,37 @@
 import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
-import {getMovies, getFilters} from '../../selectors'
-import {getMovieThunk} from '../../redux/reducers/movieReducer'
+import {getMovies, getFilters, getPage} from '../../selectors'
+import {getMovieThunk,removeMovieAC} from '../../redux/reducers/movieReducer'
 import {addToWatchListAC} from '../../redux/reducers/watchLaterReducer'
 import MovieCard from './MovieList'
 
-function MovieListContainer({movies,filters,getMovieThunk,addToWatchListAC}:any) {
+function MovieListContainer({page,movies,filters,getMovieThunk,addToWatchListAC,removeMovieAC}:any) {
     useEffect(()=>{
-        getMovieThunk(1,filters)
-    },[filters])
+        !movies.length && getMovieThunk(page,filters)
+    },[])
+
+
+    useEffect(()=>{
+        addLoad();   
+        console.log('yep')
+       })
+
+    const addLoad = () => {
+
+        if(movies.length  === 0){
+            console.log('yip')
+            getMovieThunk(page+1,filters)
+        }
+    }
     return(
         <> 
-            {!!movies ?<MovieCard movies={movies} addToWatchListAC={addToWatchListAC} getMovieThunk={getMovieThunk}/> : <h1>loading</h1>}
+            {!!movies ?<MovieCard movies={movies} addToWatchListAC={addToWatchListAC} remove={removeMovieAC} getMovieThunk={getMovieThunk}/> : <h1>loading</h1>}
         </>
     )
 }
 const mapStateToProps = (store:any) => ({
     movies:getMovies(store),
-    filters:getFilters(store)
+    filters:getFilters(store),
+    page:getPage(store)
 })
-export default connect(mapStateToProps,{getMovieThunk,addToWatchListAC})(MovieListContainer)
+export default connect(mapStateToProps,{getMovieThunk,addToWatchListAC,removeMovieAC})(MovieListContainer)

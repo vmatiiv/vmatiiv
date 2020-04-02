@@ -44,16 +44,22 @@ export const getCredits = (id:number) => {
 }
 
 interface Idata {
-    "release_date.gte"?: string,
-    "release_date.lte"?: string,
-    sortBy ?: string,
-    with_people?: string,
-    "runtume.gte" ?: number,
-    "runtime.lte" ?:number,
+    years: [],
+    rate:number
     with_genres? : any,
 }
 
 export const movieDiscover = (page?:number,data?:Idata) => {
+    const dateGte = (data && data.years && Math.min(...data.years)+'-01-01' );
+    const dateLte = (data && data.years && Math.max(...data.years)+'-12-31' );
+    const rate = (data && data.rate );
     const with_genres =  (data && data.with_genres && data?.with_genres.map( (x:any) => x.id).join(',')) || ''
-    return movies.get(`discover/movie`,{params:{...data,page,with_genres}})
+    return movies.get(`discover/movie`,{params:
+        {...data,
+            page,
+            with_genres,
+            ["primary_release_date.gte"]: dateGte,
+            ["primary_release_date.lte"]: dateLte,
+            ["vote_average.gte"]: rate,
+        }})
 }

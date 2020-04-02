@@ -7,7 +7,7 @@ export const watchLaterReducer = (initialState:any) => (state=initialState,actio
     switch (action.type) {
         case ADD_TO_WATCH_LIST:
 
-
+            console.log([action.payload])
             return [...state,action.payload]
             // return state
         case REMOVE_FROM_WATCH_LIST:

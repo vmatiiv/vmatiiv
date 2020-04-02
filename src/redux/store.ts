@@ -14,9 +14,17 @@ const initialState = cachedState ? JSON.parse(cachedState) : {};
 // const middleware = compose(applyMiddleware(thunk, persist), devtools);
 
 const reducers = combineReducers({
-    filters: filterReducer(initialState.filters || {}),
-    movies: movieReducer(initialState.movies || {}),
-    watchLater: watchLaterReducer(initialState.watchLater || {})
+    filters: filterReducer(initialState.filters || {
+        with_genres:[],
+        years:[1980,new Date().getFullYear()],
+        rate: 6
+
+    }),
+    movies: movieReducer(initialState.movies || {
+        movies:[],
+        page:1
+    }),
+    watchLater: watchLaterReducer(initialState.watchLater || [])
 })
 
 

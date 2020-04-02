@@ -4,10 +4,10 @@ import WatchLater from './WatchLater'
 import { getWatchLaterMovies } from '../../selectors'
 import {removeFromWatchListAC} from '../../redux/reducers/watchLaterReducer'
 function WatchLaterContainer({movies,removeFromWatchListAC}:any) {
-    console.log(movies)
+    console.log(!!movies)
     return (
         <>
-           {!!movies ? <WatchLater movies={movies} remove={removeFromWatchListAC}/>: <h1>nothing here</h1>}
+           {!!movies.length ? <WatchLater movies={movies} remove={removeFromWatchListAC}/>: <h1>nothing here</h1>}
         </>
     )
 }

@@ -1,7 +1,9 @@
-import React, { useEffect, useState, useRef } from 'react'
-import {getGenres} from '../../api';
-import {Redirect} from 'react-router-dom'
-import {movieDiscover} from '../../api'
+import React from 'react'
+import Slid from './Slid'
+import Rate from './Rate';
+import Genres from './Genres'
+import Button from '@material-ui/core/Button'
+
 interface Igenres  {
     id:number,
     name:string
@@ -12,60 +14,26 @@ interface IFilters {
     genres: Array<Igenres>
 }
 
-function Filters ({filters,setFilters,genres,back}:any) {
-    const [allGenres,setAllGenres] = useState(genres);
+function Filters ({filters,setFilters,getMovieThunk,genres,back}:any) {
 
-    const [ourGenres ,setOurGenres] = useState<Igenres[]>([]);
-    
-    const handleSubmit = (e:any) => {
-        e.preventDefault();
-        setFilters({
-            with_genres:ourGenres
-        })
+    const onSubmit = (e:any) => {
+        getMovieThunk(1,filters);
         back();
-
     }
 
-    const fetch = async () => {
-        const a = await movieDiscover(1,filters)
-        console.log(a)
-    }
 
-    const handleGenresClick = (id:number,name:string) => {
-        setAllGenres(allGenres.filter((x:any) => x.id != id))
-        setOurGenres([...ourGenres,{id,name}]);
-    }
+    return (
+        <div>
 
-    const handleOurGenresClick = (id:number,name:string) => {
-        setOurGenres(ourGenres.filter(x => x.id != id))
-        setAllGenres([...allGenres,{id,name}]);
-    }
-
-    const checkboxes = allGenres.map((x:any) => 
-        <button key={x.id} onClick={()=>handleGenresClick(x.id,x.name)}>{x.name}</button>)
-
-    
-    const our = !!ourGenres.length && ourGenres.map((x:any) => 
-        <button key={x.id} onClick={()=>handleOurGenresClick(x.id,x.name)}>{x.name}</button>)
-
-    return (<>
-    <button onClick={fetch}>click</button>
-        <form onSubmit={handleSubmit}>
-            <label > Actors</label>
-            <input type="text"  placeholder="e.g. Tom Hardy"/>
-            <div>
-                {our}
-            </div>
-            {checkboxes}
-            
-            <input type="submit" value="submit"/>
-        </form>
-        </>
+            <Genres filters={filters} setFilters={setFilters} genres={genres}/>
+            <Slid filters={filters} setFilters={setFilters}/>
+            <Rate filters={filters} setFilters={setFilters}/>
+            <Button variant="contained" onClick={onSubmit}>Submit</Button>
+        </div>
     )
 }
 
 export default Filters
-
 
 
 
