@@ -18,11 +18,7 @@ function MovieList({movies,addToWatchListAC,getMovieThunk,remove}:any) {
     const list = movies.map((x:any)=> <MovieItem key={x.id} {...x} remove={remove} watchLater={addToWatchListAC} />)   
     
     return (
-        <div>
-            <div style={{display:"flex",justifyContent:"space-around"}}>
-                <Link to="/watch-later">later</Link>
-                <Link to="/filters">filters</Link>
-            </div>
+        <div style={{width:"60vw"}}>
             {/* <Centered> */}
                 {list}
             {/* </Centered> */}

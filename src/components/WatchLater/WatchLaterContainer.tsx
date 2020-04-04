@@ -15,4 +15,7 @@ const mapStateToProps = (store:any) => ({
     movies: getWatchLaterMovies(store) 
 })
 
-export default connect(mapStateToProps,{removeFromWatchListAC})(WatchLaterContainer)
+const mapDispatchToProps = {
+    removeFromWatchListAC
+}
+export default connect(mapStateToProps,mapDispatchToProps)(WatchLaterContainer)

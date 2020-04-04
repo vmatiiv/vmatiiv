@@ -7,10 +7,10 @@ import Filters from './Filters'
 
 
 
-function FiltersContainer({filters,page,setFiltersAC,setPageAC,genres,history,getMovieThunk}:any) {
+function FiltersContainer({filters,page,setFiltersAC,setPageAC,genres,getMovieThunk}:any) {
 
     return (  <>
-        { !!genres ? <Filters filters={filters} page={page} setPage={setPageAC} getMovieThunk={getMovieThunk} setFilters={setFiltersAC} back={history.goBack} genres={genres}/> : <h1>loading</h1>}
+        { !!genres ? <Filters filters={filters} page={page} setPage={setPageAC} getMovieThunk={getMovieThunk} setFilters={setFiltersAC}  genres={genres}/> : <h1>loading</h1>}
         </>
     )
 }
@@ -20,5 +20,10 @@ const mapStateToProps = (store:any) => ({
     filters: getFilters(store),
     page: getPage(store)
 })
+const mapDispatchToProps = {
+    setFiltersAC,
+    setPageAC,
+    getMovieThunk
+}
 
-export default connect(mapStateToProps,{setFiltersAC,setPageAC,getMovieThunk})(FiltersContainer)
+export default connect(mapStateToProps,mapDispatchToProps)(FiltersContainer)

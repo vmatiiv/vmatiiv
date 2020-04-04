@@ -2,7 +2,6 @@ import React, { useState,useEffect } from 'react'
 import {Button } from '@material-ui/core';
 
 function Genres({genres,filters,setFilters}:any) {
-
     const [ourGenres ,setOurGenres] = useState(filters.with_genres);
     const [allGenres,setAllGenres] = useState(genres.filter( (x:any) => ![...ourGenres.map( (x:any) => x.id)].includes(x.id)));
     

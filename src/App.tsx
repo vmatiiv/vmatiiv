@@ -1,45 +1,65 @@
-import React, { Suspense, useState, useEffect } from 'react';
-import Draggable from 'react-draggable'
+import React, {  useState, useEffect } from 'react';
 import WatchLater from './components/WatchLater'
 import FiltersContainer from './components/Filters'
 import MovieCardContainer from './components/MovieCard/MovieListContainer'
 
 import { getGenresThunk} from './redux/reducers/movieReducer'
 import { connect } from 'react-redux';
-import { getFilters } from './selectors';
-import { Route } from 'react-router-dom';
 
 import styled from 'styled-components';
 
-const StyledApp = styled.div` 
+import TransHOC from './HOC/TransHOC';
+
+
+const Wrapper = styled.div` 
   width:100vw;
   height:100vh;
   overflow:hidden;
 `
 
-function App({filters,setFiltersAC,getGenresThunk,getMovieThunk}:any) {
+const StyledApp = styled.div`
+  display:flex;
+  position:relative;
+  justify-content:center;
+`
+
+function App({getGenresThunk,getMovieThunk}:any) {
+  const [watchLaterPage,setWatchLaterPage] = useState(false)
+  const [filters,setFilters] = useState(false)
   useEffect(()=>{
     getGenresThunk()
   },[]);
 
+  const handleFiltersShow = () =>{
+    setFilters(!filters)
+    setWatchLaterPage(false);
+  }
+
+  const handleWatchLaterShow = () => {
+    setWatchLaterPage(!watchLaterPage);
+    setFilters(false)
+
+  }
   return (
+    <Wrapper >
+        <h1 onClick={handleWatchLaterShow}>watch Later</h1>
+        <h1 onClick={handleFiltersShow}>filters</h1>
+      <StyledApp>
 
-    <StyledApp >
-      <div>
-      <Route path="/" exact component={MovieCardContainer}/>
+        <TransHOC visible={watchLaterPage} transform={100}>
+          <WatchLater/>  
+        </TransHOC>
 
-      </div>
-      <div>
-        <Route path="/watch-later" component={WatchLater}/>
-        <Route path="/filters" component={FiltersContainer}/>
-      </div>
-    </StyledApp >
+          <MovieCardContainer/>
+        
+        <TransHOC visible={filters} transform={-100}>
+          <FiltersContainer/>
+        </TransHOC>
+
+
+      </StyledApp>
+    </Wrapper >
   );
 }
 
-
-const mapStateToProps = (store:any) => ({
-  filters:getFilters(store)
-}) 
-
-export default connect(mapStateToProps,{getGenresThunk})(App)
+export default connect(null,{getGenresThunk})(App)
