@@ -4,6 +4,6 @@ export const getGenres = (store:any) => store.movies.genres
 export const getWatchLaterMovies = (store:any) => store.watchLater
 export const getMovies = (store:any) => store.movies.movies
 export const getPage = (store:any) => store.movies.page
+export const getBlockList = (store:any) => store.movies.blocklist
 
-
-export const filteredMovies = createSelector(getMovies,items=>items.filter((x:any) => x.id !== 399121));
+export const filteredMovies = createSelector(getMovies,getBlockList,(items,blockList)=>{ console.log(blockList); return items.filter((x:any) => !(x.id in blockList))});

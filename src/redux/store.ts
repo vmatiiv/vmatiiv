@@ -22,7 +22,8 @@ const reducers = combineReducers({
     }),
     movies: movieReducer(initialState.movies || {
         movies:[],
-        page:1
+        page:1,
+        blocklist:[]
     }),
     watchLater: watchLaterReducer(initialState.watchLater || [])
 })

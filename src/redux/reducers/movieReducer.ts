@@ -13,9 +13,10 @@ export const movieReducer = (initialState:any) => (state=initialState,action:IAc
     switch (action.type) {
         case GET_MOVIES:
             return {
+                
                 ...state,
-                page:action.payload.page,
-                movies:[...action.payload.results,...state.movies]
+                page:action.payload.resultPage,
+                movies:[...action.payload.filteredList]
             }
 
         case GET_GENRES:
@@ -23,10 +24,11 @@ export const movieReducer = (initialState:any) => (state=initialState,action:IAc
         case SET_PAGE:
             return {...state,page:1}
         case REMOVE_MOVIE:
-
-            console.log(state.movies.filter((x:any)=> x.id !== action.payload ))
-            
-            return {...state,movies:[...state.movies.filter((x:any)=> x.id !== action.payload )]}
+            return {
+                ...state,
+                movies:[...state.movies.filter((x:any)=> x.id !== action.payload )],
+                blocklist:[...state.blocklist,action.payload]
+            }
         default:
             return state
     }
@@ -46,7 +48,17 @@ export const removeMovieAC = (id:number) => ({type:REMOVE_MOVIE,payload:id})
 
 const getMoviesAC = (data:any) => ({type:GET_MOVIES,payload:data})
 
-export const getMovieThunk = (page?:any,filters?:any) => async (dispatch:Dispatch)=>{
+export const getMovieThunk = (blocklist:[number],page?:any,filters?:any) => async (dispatch:Dispatch)=>{
+
     const movies = await movieDiscover(page,filters);
-    dispatch(getMoviesAC(movies.data))
+    if(movies.data.total === 0){
+        console.log('havent same film')
+    }
+    const resultPage =  movies.data.page;
+    const filteredList = movies.data.results.filter((x:any) => {
+        return !blocklist.includes(x.id)
+    })
+
+    // dispatch(getMoviesAC(movies.data))
+    dispatch(getMoviesAC({resultPage,filteredList}))
 }

@@ -18,7 +18,7 @@ function MovieList({movies,addToWatchListAC,remove}:any) {
         <div style={{width:"60vw"}}>
             {/* <Centered> */}
                 {/* {list} */}
-                <MovieItem  {...movies[1]} remove={remove} watchLater={addToWatchListAC} />
+                {/* <MovieItem  {...movies[1]} remove={remove} watchLater={addToWatchListAC} /> */}
                 <MovieItem  {...movies[0]} remove={remove} watchLater={addToWatchListAC} />
             
             {/* </Centered> */}

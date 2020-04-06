@@ -13,11 +13,11 @@ interface IFilters {
     genres: Array<Igenres>
 }
 
-function Filters ({filters,setFilters,getMovieThunk,genres}:any) {
+function Filters ({blocklist,filters,setFilters,getMovieThunk,genres,display}:any) {
     const onSubmit = (e:any) => {
-        getMovieThunk(1,filters);
+        display(false);
+        getMovieThunk(blocklist,1,filters);
     }
-
 
     return (
         <div>

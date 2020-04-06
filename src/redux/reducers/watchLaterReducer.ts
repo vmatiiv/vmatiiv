@@ -9,11 +9,11 @@ export const watchLaterReducer = (initialState:any) => (state=initialState,actio
 
             console.log([action.payload])
             return [...state,action.payload]
-            // return state
+
         case REMOVE_FROM_WATCH_LIST:
-            // console.log(...);
+
             return [...state.filter(( x:any ) => x.id !== action.payload )]
-            // return state
+    
         default:
             return state
     }

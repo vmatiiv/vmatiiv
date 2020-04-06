@@ -1,6 +1,7 @@
-import React from 'react'
+import React, { Suspense } from 'react'
 import Draggable from 'react-draggable';
-
+import Loader from '../common/Loader';
+// import SuspenseImageLoader from "react-suspense-image-loader"
 interface IMovieItem {
     id:number,
     title:string,
@@ -35,13 +36,18 @@ const MovieItem = ({id,title,remove,watchLater,poster_path,overview}:IMovieItem)
     const onScroll = (e:any) => {
       console.log(e.target.scrollTop)
     }
-
+    console.log(imgPath)
     return (
 <>
               <Draggable  onStop={onStop}  axis="x"  position={{x:0,y:0}} allowAnyClick={true}>   
                      <div onScroll={onScroll} style={{overflowY:"scroll",height:"70vh",position:"absolute"}}>
                      <div >
-                       <img src={imgPath} alt={title} />
+                       {/* <SuspenseImageLoader
+                        src={imgPath}
+                        alt={title} 
+                        fallback={<Loader/>}
+                       /> */}
+                       <img src={imgPath} alt={title}></img>
                        <span style={{position:"absolute",bottom:"1rem",left:"1rem",color:"white"}}>
                          {title}
                        </span>

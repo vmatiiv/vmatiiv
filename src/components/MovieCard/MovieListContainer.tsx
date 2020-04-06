@@ -1,15 +1,15 @@
 import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
-import {getMovies, getFilters, getPage, filteredMovies} from '../../selectors'
+import {getMovies, getFilters, getPage, filteredMovies,getBlockList} from '../../selectors'
 import {getMovieThunk,removeMovieAC} from '../../redux/reducers/movieReducer'
 import {addToWatchListAC} from '../../redux/reducers/watchLaterReducer'
 import MovieCard from './MovieList'
 import Loader from '../common/Loader'
 
 
-function MovieListContainer({page,movies,filters,getMovieThunk,addToWatchListAC,removeMovieAC}:any) {
+function MovieListContainer({page,blocklist,movies,filters,getMovieThunk,addToWatchListAC,removeMovieAC}:any) {
     useEffect(()=>{
-        !movies.length && getMovieThunk(page,filters)
+        !movies.length && getMovieThunk(blocklist,page,filters)
     },[])
 
 
@@ -19,22 +19,23 @@ function MovieListContainer({page,movies,filters,getMovieThunk,addToWatchListAC,
     },[movies])
 
     const addLoad = () => {
-        if(movies.length  === 4){
+        if(movies.length  === 0){
             console.log('yip')
-            getMovieThunk(page+1,filters)
+            getMovieThunk(blocklist,page+1,filters)
         }
     }
     return(
         <> 
-            {!!movies ?<MovieCard movies={movies} addToWatchListAC={addToWatchListAC} remove={removeMovieAC} getMovieThunk={getMovieThunk}/> : <Loader/>}
+            {!!movies ? <MovieCard movies={movies} addToWatchListAC={addToWatchListAC} remove={removeMovieAC} getMovieThunk={getMovieThunk}/> : <Loader/>}
         </>
     )
 }
 const mapStateToProps = (store:any) => ({
-    // movies:getMovies(store),
+    movies:getMovies(store),
     filters:getFilters(store),
     page:getPage(store),
-    movies:filteredMovies(store)
+    blocklist:getBlockList(store)
+    // movies:filteredMovies(store)
 })
 const mapDispatchToProps = {
     getMovieThunk,

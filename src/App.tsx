@@ -25,19 +25,20 @@ const StyledApp = styled.div`
 
 function App({getGenresThunk,getMovieThunk}:any) {
   const [watchLaterPage,setWatchLaterPage] = useState(false)
-  const [filters,setFilters] = useState(false)
+  const [filters,setDisplayFilters] = useState(false)
+
   useEffect(()=>{
     getGenresThunk()
   },[]);
 
   const handleFiltersShow = () =>{
-    setFilters(!filters)
+    setDisplayFilters(!filters)
     setWatchLaterPage(false);
   }
 
   const handleWatchLaterShow = () => {
     setWatchLaterPage(!watchLaterPage);
-    setFilters(false)
+    setDisplayFilters(false)
 
   }
   return (
@@ -47,13 +48,13 @@ function App({getGenresThunk,getMovieThunk}:any) {
       <StyledApp>
 
         <TransHOC visible={watchLaterPage} transform={100}>
-          <WatchLater/>  
+          <WatchLater />  
         </TransHOC>
 
           <MovieCardContainer/>
         
         <TransHOC visible={filters} transform={-100}>
-          <FiltersContainer/>
+          <FiltersContainer setDisplayFilters={setDisplayFilters}/>
         </TransHOC>
 
 
