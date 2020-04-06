@@ -1,5 +1,5 @@
 import React from 'react'
-import Draggable, { DraggableEvent } from 'react-draggable';
+import Draggable from 'react-draggable';
 
 interface IMovieItem {
     id:number,
@@ -20,7 +20,7 @@ const MovieItem = ({id,title,remove,watchLater,poster_path,overview}:IMovieItem)
     // const onDrag = (e:DraggableEvent,ui:any) => {
 
     // }
-    const onStop = (e:DraggableEvent,ui:any) => {
+    const onStop = (e:any,ui:any) => {
         if(ui.x>0){
             watchLater({id,title,overview,imgPath});
         }
@@ -32,12 +32,14 @@ const MovieItem = ({id,title,remove,watchLater,poster_path,overview}:IMovieItem)
         // onDrag,
         onStop
     }
-   
+    const onScroll = (e:any) => {
+      console.log(e.target.scrollTop)
+    }
 
     return (
 <>
-              <Draggable  onStop={onStop}  axis="x" position={{x:0,y:0}} allowAnyClick={true}>   
-                     <div style={{overflowY:"scroll",height:"70vh"}}>
+              <Draggable  onStop={onStop}  axis="x"  position={{x:0,y:0}} allowAnyClick={true}>   
+                     <div onScroll={onScroll} style={{overflowY:"scroll",height:"70vh",position:"absolute"}}>
                      <div >
                        <img src={imgPath} alt={title} />
                        <span style={{position:"absolute",bottom:"1rem",left:"1rem",color:"white"}}>

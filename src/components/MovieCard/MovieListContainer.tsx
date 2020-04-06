@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
-import { connect, ConnectedProps } from 'react-redux'
-import {getMovies, getFilters, getPage} from '../../selectors'
+import { connect } from 'react-redux'
+import {getMovies, getFilters, getPage, filteredMovies} from '../../selectors'
 import {getMovieThunk,removeMovieAC} from '../../redux/reducers/movieReducer'
 import {addToWatchListAC} from '../../redux/reducers/watchLaterReducer'
 import MovieCard from './MovieList'
@@ -19,7 +19,7 @@ function MovieListContainer({page,movies,filters,getMovieThunk,addToWatchListAC,
     },[movies])
 
     const addLoad = () => {
-        if(movies.length  === 0){
+        if(movies.length  === 4){
             console.log('yip')
             getMovieThunk(page+1,filters)
         }
@@ -31,9 +31,10 @@ function MovieListContainer({page,movies,filters,getMovieThunk,addToWatchListAC,
     )
 }
 const mapStateToProps = (store:any) => ({
-    movies:getMovies(store),
+    // movies:getMovies(store),
     filters:getFilters(store),
-    page:getPage(store)
+    page:getPage(store),
+    movies:filteredMovies(store)
 })
 const mapDispatchToProps = {
     getMovieThunk,

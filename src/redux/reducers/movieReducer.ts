@@ -15,7 +15,7 @@ export const movieReducer = (initialState:any) => (state=initialState,action:IAc
             return {
                 ...state,
                 page:action.payload.page,
-                movies:[...action.payload.results]
+                movies:[...action.payload.results,...state.movies]
             }
 
         case GET_GENRES:

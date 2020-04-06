@@ -3,8 +3,6 @@ import { Transition} from 'react-transition-group';
 import styled from 'styled-components';
 
 const Try = styled.div`
-
-
       transition:all ${props =>  props.duration}ms ease-in-out;
       opacity:0;
       width:10px;
@@ -15,10 +13,8 @@ const Try = styled.div`
           position:absolute;
           top:0;
           left:0;
-          z-index:2;
       }
 `
-
 
 function TransHOC({visible,children,transform}) {
     const duration = 300;
@@ -28,13 +24,15 @@ function TransHOC({visible,children,transform}) {
         entering: { 
           opacity: 1,
           width: windowScale, 
+          zIndex: 2,
           transform: "translateX(0)"},
         entered:  { 
           opacity: 1,
            width: windowScale,
-           transform: "translateX(0)"},
-        exiting:  { opacity:0,},
-        exited:  { opacity: 0,},
+           transform: "translateX(0)",
+          zIndex:2 },
+        exiting:  { opacity:0,zIndex:0},
+        exited:  { opacity: 0,zIndex:0},
       };
 
     return (
