@@ -1,7 +1,7 @@
-import React, { Suspense, useState } from 'react'
+import React, { Suspense, useState, useRef } from 'react'
 import Draggable from 'react-draggable';
 import Loader from '../common/Loader';
-import SuspenseImageLoader from "react-suspense-image-loader"
+import alternative from '../../alternative.jpg'
 interface IMovieItem {
     id:number,
     title:string,
@@ -14,9 +14,10 @@ interface IMovieItem {
 const MovieItem = ({id,title,remove,watchLater,poster_path,overview}:IMovieItem) => {
     
     const [spiner,setSpiner] = useState(true)
-    const alternative = "https://www.google.com/url?sa=i&url=https%3A%2F%2Funsplash.com%2Fs%2Fphotos%2Fcity&psig=AOvVaw3sOjXTsG7ZmuN7YxCaSPTd&ust=1585864050101000&source=images&cd=vfe&ved=0CAIQjRxqFwoTCJiK-IyayOgCFQAAAAAdAAAAABAD"
+    const im = useRef<HTMLImageElement>(document.createElement("img"))
 
     const imgPath =  (poster_path && `http://image.tmdb.org/t/p/w400${poster_path}`) || alternative
+
     // const onStart = (e:DraggableEvent,ui:any) => {
 
     // }
@@ -40,26 +41,34 @@ const MovieItem = ({id,title,remove,watchLater,poster_path,overview}:IMovieItem)
       console.log(e.target.scrollTop)
     }
 
-
-
+    const onLoad = (e:any) =>{
+      console.log(e.target.complete)
+      setSpiner(false)
+    }
+    const onError = () => {
+      im.current.src=alternative
+      console.log(im)
+  debugger
+    }
 
     return (
 <>
               <Draggable  onStop={onStop}  axis="x"  position={{x:0,y:0}} allowAnyClick={true}>   
-                     <div style={{overflowY:"scroll",height:"70vh",position:"absolute"}}>
-                     <div >
-                       
-                      <Suspense fallback={<Loader/>}>
-                       <img src={imgPath}  alt={title}></img>
+                     <div style={{overflowY:"scroll",width:"100%",height:"100vh",textAlign:"center"}}>
+                       <div>
+
+
+                        {spiner && <Loader/>}
+                       <img ref={im} onLoad={onLoad} onError={onError} src={imgPath}   alt={title}></img>
                        <span style={{position:"absolute",bottom:"1rem",left:"1rem",color:"white"}}>
                          {title}
                        </span>
                        <p> 
                        {overview} 
                      </p>
-
-                      </Suspense>
                      </div>
+
+
                      </div>
               </Draggable>
 </>

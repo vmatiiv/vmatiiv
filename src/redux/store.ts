@@ -18,7 +18,6 @@ const reducers = combineReducers({
         with_genres:[],
         years:[1980,new Date().getFullYear()],
         rate: 6,
-        genres:[]
 
     }),
     movies: movieReducer(initialState.movies || {

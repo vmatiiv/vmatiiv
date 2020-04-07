@@ -4,7 +4,7 @@ import {Button } from '@material-ui/core';
 function Genres({genres,filters,setFilters}:any) {
     const [ourGenres ,setOurGenres] = useState(filters.with_genres);
     const [allGenres,setAllGenres] = useState(genres.filter( (x:any) => ![...ourGenres.map( (x:any) => x.id)].includes(x.id)));
-    
+
     const handleGenresClick = (id:number,name:string) => {
         setAllGenres(allGenres.filter((x:any) => x.id != id))
         setOurGenres([...ourGenres,{id,name}]);
