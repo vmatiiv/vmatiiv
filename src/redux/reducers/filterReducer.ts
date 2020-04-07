@@ -21,13 +21,19 @@ export const filterReducer = (initialState:any) => (state=initialState,action:IA
     switch (action.type) {
         case SET_FILTERS:
             return {...state,...action.payload}
-
+        case GET_GENRES:
+            return {...state,genres:[...action.payload]}
         default:
             return state
     }
 }
 
+const getGenresAC = (genres:any) => ({type:GET_GENRES,payload:[...genres]})
 
+export const getGenresThunk = () => async (dispatch:Dispatch)=> {
+    const genres = await getGenres();
+    dispatch(getGenresAC(genres.data.genres))
+}
 export const setFiltersAC = (filters:Idata) => ({type:SET_FILTERS,payload:{...filters}})
 
 

@@ -13,14 +13,12 @@ export const movieReducer = (initialState:any) => (state=initialState,action:IAc
     switch (action.type) {
         case GET_MOVIES:
             return {
-                
                 ...state,
                 page:action.payload.resultPage,
                 movies:[...action.payload.filteredList]
             }
 
-        case GET_GENRES:
-            return {...state,genres:[...action.payload]}
+
         case SET_PAGE:
             return {...state,page:1}
         case REMOVE_MOVIE:
@@ -37,12 +35,7 @@ export const movieReducer = (initialState:any) => (state=initialState,action:IAc
 
 
 export const setPageAC = () => ({type:SET_PAGE})
-const getGenresAC = (genres:any) => ({type:GET_GENRES,payload:[...genres]})
 
-export const getGenresThunk = () => async (dispatch:Dispatch)=> {
-    const genres = await getGenres();
-    dispatch(getGenresAC(genres.data.genres))
-}
 
 export const removeMovieAC = (id:number) => ({type:REMOVE_MOVIE,payload:id})
 

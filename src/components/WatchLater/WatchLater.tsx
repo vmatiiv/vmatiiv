@@ -15,7 +15,7 @@ const list = movies.map((x:any) =>
         <button onClick={()=>remove(x.id)}>delete This</button>
     </Item> )
     return (
-        <div style={{overflowY:"auto",height:"70vh",width:"100vw"}}>
+        <div style={{overflowY:"auto",height:"70vh",width:"100%"}}>
             {list}
         </div>
     )

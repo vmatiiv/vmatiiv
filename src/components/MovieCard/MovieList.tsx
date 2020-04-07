@@ -12,14 +12,14 @@ const Centered = styled.div`
 `
 
 function MovieList({movies,addToWatchListAC,remove}:any) {
-    const list = movies.map((x:any)=> <MovieItem key={x.id} {...x} remove={remove} watchLater={addToWatchListAC} />)   
+    // const list = movies.map((x:any)=> <MovieItem key={x.id} {...x} remove={remove} watchLater={addToWatchListAC} />)   
     
     return (
         <div style={{width:"60vw"}}>
             {/* <Centered> */}
                 {/* {list} */}
                 {/* <MovieItem  {...movies[1]} remove={remove} watchLater={addToWatchListAC} /> */}
-                <MovieItem  {...movies[0]} remove={remove} watchLater={addToWatchListAC} />
+                <MovieItem  {...movies} remove={remove} watchLater={addToWatchListAC} />
             
             {/* </Centered> */}
         </div>

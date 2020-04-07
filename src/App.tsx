@@ -2,8 +2,8 @@ import React, {  useState, useEffect } from 'react';
 import WatchLater from './components/WatchLater'
 import FiltersContainer from './components/Filters'
 import MovieCardContainer from './components/MovieCard/MovieListContainer'
-
-import { getGenresThunk} from './redux/reducers/movieReducer'
+import {Route,Link} from 'react-router-dom'
+import { getGenresThunk} from './redux/reducers/filterReducer'
 import { connect } from 'react-redux';
 
 import styled from 'styled-components';
@@ -39,13 +39,20 @@ function App({getGenresThunk,getMovieThunk}:any) {
   const handleWatchLaterShow = () => {
     setWatchLaterPage(!watchLaterPage);
     setDisplayFilters(false)
-
   }
   return (
     <Wrapper >
         <h1 onClick={handleWatchLaterShow}>watch Later</h1>
+        {/* <Link to='/watch-later'> watch later</Link>
+        <Link to='/filters'>filters</Link> */}
         <h1 onClick={handleFiltersShow}>filters</h1>
       <StyledApp>
+      {/* <Route path="/watch-later" component={WatchLater}/>  
+
+      <Route path="/" component={MovieCardContainer}/>  
+      <Route path="/filters" >
+        <FiltersContainer setDisplayFilters={setDisplayFilters}/>
+      </Route>   */}
 
         <TransHOC visible={watchLaterPage} transform={100}>
           <WatchLater />  

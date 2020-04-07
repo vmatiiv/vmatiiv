@@ -17,7 +17,6 @@ function FiltersContainer({blocklist,filters,page,setFiltersAC,setDisplayFilters
 const mapStateToProps = (store:any) => ({
     genres: getGenres(store),
     filters: getFilters(store),
-    page: getPage(store),
     blocklist: getBlockList(store)
 })
 const mapDispatchToProps = {

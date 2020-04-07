@@ -24,9 +24,10 @@ function MovieListContainer({page,blocklist,movies,filters,getMovieThunk,addToWa
             getMovieThunk(blocklist,page+1,filters)
         }
     }
+    
     return(
         <> 
-            {!!movies ? <MovieCard movies={movies} addToWatchListAC={addToWatchListAC} remove={removeMovieAC} getMovieThunk={getMovieThunk}/> : <Loader/>}
+            {!!movies ? <MovieCard movies={movies[0]} addToWatchListAC={addToWatchListAC} remove={removeMovieAC} getMovieThunk={getMovieThunk}/> : <Loader/>}
         </>
     )
 }
