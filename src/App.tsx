@@ -7,7 +7,7 @@ import { getGenresThunk} from './redux/reducers/filterReducer'
 import { connect } from 'react-redux';
 
 import styled from 'styled-components';
-
+import NavHOC from './HOC/NavHOC'
 import TransHOC from './HOC/TransHOC';
 
 
@@ -23,38 +23,42 @@ const StyledApp = styled.div`
   justify-content:center;
 `
 
-function App({getGenresThunk,getMovieThunk}:any) {
-  const [watchLaterPage,setWatchLaterPage] = useState(false)
-  const [filters,setDisplayFilters] = useState(false)
-
+function App({getGenresThunk}:any) {
+  const [watchLaterPage,setWatchLaterPage] = useState(true)
+  const [filters,setDisplayFilters] = useState(true)
+  debugger
   useEffect(()=>{
     getGenresThunk()
   },[]);
 
   const handleFiltersShow = () =>{
     setDisplayFilters(!filters)
-    setWatchLaterPage(false);
+    setWatchLaterPage(true)
   }
 
   const handleWatchLaterShow = () => {
     setWatchLaterPage(!watchLaterPage);
-    setDisplayFilters(false)
+    setDisplayFilters(true)
   }
   return (
     <Wrapper >
-        <h1 onClick={handleWatchLaterShow}>watch Later</h1>
-        {/* <Link to='/watch-later'> watch later</Link>
-        <Link to='/filters'>filters</Link> */}
-        <h1 onClick={handleFiltersShow}>filters</h1>
+        {/* <h1 onClick={handleWatchLaterShow}>watch Later</h1> */}
+        <nav style={{display:"flex",justifyContent:"space-around",alignItems:"center"}}>
+          {/* <Link  to={location =>  `${location.pathname === ('/') || location.pathname == ('/filters')? '/watch-later': '/'}` }  > watch later</Link> */}
+          {/* <Link  to={location =>  `${location.pathname === '/' || location.pathname == ('/watch-later') ? '/filters': '/'}` } >filters</Link> */}
+          <NavHOC title={} to={}/>
+        </nav>
+        {/* <h1 onClick={handleFiltersShow}>filters</h1> */}
       <StyledApp>
-      {/* <Route path="/watch-later" component={WatchLater}/>  
+
+      <Route path="/watch-later" component={WatchLater}/>  
 
       <Route path="/" component={MovieCardContainer}/>  
       <Route path="/filters" >
-        <FiltersContainer setDisplayFilters={setDisplayFilters}/>
-      </Route>   */}
+        <FiltersContainer/>
+      </Route>  
 
-        <TransHOC visible={watchLaterPage} transform={100}>
+        {/* <TransHOC visible={watchLaterPage} transform={100}>
           <WatchLater />  
         </TransHOC>
 
@@ -62,7 +66,7 @@ function App({getGenresThunk,getMovieThunk}:any) {
         
         <TransHOC visible={filters} transform={-100}>
           <FiltersContainer setDisplayFilters={setDisplayFilters}/>
-        </TransHOC>
+        </TransHOC> */}
 
 
       </StyledApp>
