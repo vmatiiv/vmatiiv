@@ -7,8 +7,9 @@ import MovieItem from './MovieItem'
 import Loader from '../common/Loader'
 
 function MovieListContainer({getVideoThunk,getActorsThunk,page,notFound,isLoading,blocklist,movies,filters,getMovieThunk,addToWatchListAC,removeMovieAC}:any) {
+
     useEffect(()=>{
-        if( !movies ){
+        if( !movies && navigator.onLine ){
             console.log('yip')
             getMovieThunk(blocklist,page+1,filters)
         }
@@ -42,6 +43,7 @@ function MovieListContainer({getVideoThunk,getActorsThunk,page,notFound,isLoadin
         return () => document.removeEventListener('keydown',handleKeys)
       })
 
+    if(!navigator.onLine) return <h1>no internet connection</h1> 
     if(notFound) return <h1>not found movie by your query</h1>
     if(isLoading ) return <Loader/>
     return <MovieItem {...movies} remove={removeMovieAC} watchLater={addToWatchListAC}  />
@@ -53,6 +55,7 @@ const mapStateToProps = (store:any) => ({
     blocklist:getBlockList(store),
     isLoading:isLoading(store),
     notFound:notFound(store),
+
 })
 const mapDispatchToProps = {
     getMovieThunk,

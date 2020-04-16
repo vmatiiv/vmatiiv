@@ -37,8 +37,7 @@ function Filters ({blocklist,filters,setFilters,getMovieThunk,genres}:IFilters) 
     
     const [submitted,setSubmitted] = useState(false)
     const onSubmit = (e:any) => {
-
-        getMovieThunk(blocklist,1,filters);
+        if(navigator.onLine) getMovieThunk(blocklist,1,filters);
         setSubmitted(true)
     }
 

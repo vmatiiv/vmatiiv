@@ -12,6 +12,7 @@ const LOADING = "LOADING"
 const NOT_FOUND = "NOT_FOUND"
 const GET_VIDEO = "GET_VIDEO"
 const GET_ACTORS = "GET_ACTORS"
+const NET_ERROR = "NET_ERROR"
 export const movieReducer = (initialState:any) => (state=initialState,{type,payload}:IAction)=>{
     switch (type) {
         case GET_MOVIES:
@@ -31,7 +32,9 @@ export const movieReducer = (initialState:any) => (state=initialState,{type,payl
         case NOT_FOUND:
             return {...state,notFound:true}
         case GET_VIDEO:
-            return {...state,video:payload}    
+            return {...state,video:payload}   
+        case NET_ERROR:
+            return {...state,netError:true}     
         case REMOVE_MOVIE:
             return {
                 ...state,
@@ -51,19 +54,31 @@ const setNotFound = () => ({type:NOT_FOUND})
 const loadingAC = () => ({type:LOADING});
 export const removeMovieAC = (id:number) => ({type:REMOVE_MOVIE,payload:id})
 
-
+const netIssueAC = () => ({type:NET_ERROR})
 const getActorsAC = (actors:any) => ({type:GET_ACTORS,payload:actors})
 export const getActorsThunk = (id:number) => async (dispatch:Dispatch) => {
-    const actors = await getCredits(id);
-    debugger
-    dispatch(getActorsAC(actors.data.cast.filter((x:any) => !!x.profile_path && x.order <15 && !x.character.toLowerCase().includes('(uncredited)'))))
+    try {
+        const actors = await getCredits(id);
+        const filteredList = actors.data.cast.filter((x:any) => !!x.profile_path && !x.character.toLowerCase().includes('(uncredited)')).slice(0,15)
+        dispatch(getActorsAC(filteredList))
+            
+    } catch (error) {
+        dispatch(netIssueAC())
+        dispatch(getActorsAC(null))  
+
+    }
 }
 
 const getVideoAC = (video:any) => ({type:GET_VIDEO,payload:video})
 export const getVideoThunk = (id:number) => async (dispatch:Dispatch) => {
-    const video = await getMovieVideos(id);
-    
-    dispatch(getVideoAC(video.data.results.filter((x:any)=>x.type.toLowerCase().includes('trailer') )[0]))
+    try {
+        const video = await getMovieVideos(id);
+        dispatch(getVideoAC(video.data.results.filter((x:any)=>x.type.toLowerCase().includes('trailer') )[0] ))
+            
+    } catch (error) {
+        dispatch(getVideoAC(null ))
+
+    }
 
 }
 

@@ -36,7 +36,14 @@ const Wrapper = styled.div<{scrollable:boolean}>`
   }
   
 `
-
+const Image = styled.img<{isLoading:boolean}>`
+    width:100%;
+    height:100%;
+    object-position: center;
+    filter: ${props => props.loading ? 'blur(10px)' : 'none'};
+    overflow:hidden;
+    border-radius: 20px  20px 0 0;
+`
 
 const MovieItem = ({id,genre_ids,vote_average,vote_count,release_date,title,remove,watchLater,poster_path,overview}:IMovieItem) => {
     const [dragDissable,setDragDissable] = useState(false);
@@ -69,7 +76,10 @@ const MovieItem = ({id,genre_ids,vote_average,vote_count,release_date,title,remo
       wrapper.current.scroll(0,0);
       setDragDissable(false)
     }
-
+    const onError = (e:any) => {
+      e.target.src = alternative;
+      
+    }
     return (
 
               <Draggable axis="x"  {...dragEvents} position={{x:0,y:0}} disabled={dragDissable}  >
@@ -77,10 +87,9 @@ const MovieItem = ({id,genre_ids,vote_average,vote_count,release_date,title,remo
                      <Wrapper ref={wrapper} onClick={onClick}  scrollable={dragDissable}  >
                     
                       <div className='image' style={{position:"relative"}}>
-                      {/* <Img src={`${imgPath}`} alt={`${title}`}/> */}
                       <ProgressiveImage src={imgPath} placeholder={tinyImage}>
-                        {(src:string,loading:boolean) => 
-                        <img style={{filter: loading ? 'blur(8px)' : 'none'}} src={src} alt={title}/>}
+                        {(src:string,loading:boolean) => <Image onError={onError} src={src} isLoading={loading} alt={title} />}
+                        
                       </ProgressiveImage>
                       {dragDissable &&  <button onClick={dragEnableClick} style={{position:"absolute",right:"1rem",bottom:"1rem"}}>click</button>}
                       
