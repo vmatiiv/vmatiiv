@@ -1,13 +1,26 @@
-import React, { useState } from 'react'
+import React from 'react'
 import styled from 'styled-components'
 const Item = styled.div`
   display:flex;
   justify-content:space-between;
   align-items:center;
 `
+const Later = styled.div`
+  order:1;
+  height:95vh;
+  width:100%;
+  overflow-y:auto;
+  grid-area: later;
+  z-index:2;
+  background-color:white;
+  @media (max-width:500px){
+      position:absolute;
+      top:0;
+      left:0;
+  }
+`
 function WatchLater({movies,remove}:any) {
-//  style={{display:"flex",justifyContent:"space-between",alignItems:"center"}}
-//  style={{overflowY:"auto",height:"100vh"}}
+
 const list = movies.map((x:any) => 
     <Item key={x.id}>
        <img src={x.imgPath} width="100px" height="100px" alt={x.title}/>
@@ -15,9 +28,9 @@ const list = movies.map((x:any) =>
         <button onClick={()=>remove(x.id)}>delete This</button>
     </Item> )
     return (
-        <div style={{overflowY:"auto",height:"70vh",width:"100%"}}>
+        <Later>
             {list}
-        </div>
+        </Later>
     )
 }
 

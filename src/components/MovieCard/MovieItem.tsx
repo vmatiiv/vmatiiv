@@ -1,77 +1,113 @@
-import React, { Suspense, useState, useRef } from 'react'
-import Draggable from 'react-draggable';
-import Loader from '../common/Loader';
+import React, {  useState, useRef } from 'react'
+import Draggable, { DraggableEvent } from 'react-draggable';
+// import Loader from '../common/Loader';
 import alternative from '../../alternative.jpg'
+import Img from '../common/Img';
+import styled from 'styled-components'
+import ActorsContainer from './Actors';
+import Video from './Video';
+import ProgressiveImage from 'react-progressive-image'
 interface IMovieItem {
     id:number,
     title:string,
     poster_path:string,
     overview:string,
     watchLater: any,
-    remove: any
+    remove: any,
+    vote_average?: number,
+    release_date?: string,
+    genre_ids: Array<number>,
+    vote_count?: number
+
+
 }
+const Wrapper = styled.div<{scrollable:boolean}>`
+  position:relative;
+  touch-action:pan-y !important;
 
-const MovieItem = ({id,title,remove,watchLater,poster_path,overview}:IMovieItem) => {
+  overflow-x:hidden;
+  overflow-y:${props => props.scrollable ? 'scroll' : 'hidden'};
+  height:95vh;
+  margin: 0 auto;
+  min-width: 360px;
+  max-width: 600px;
+  .image{
+    height:${props => props.scrollable ? '80%' : '100%'};
+  }
+  
+`
+
+
+const MovieItem = ({id,genre_ids,vote_average,vote_count,release_date,title,remove,watchLater,poster_path,overview}:IMovieItem) => {
+    const [dragDissable,setDragDissable] = useState(false);
     
-    const [spiner,setSpiner] = useState(true)
-    const im = useRef<HTMLImageElement>(document.createElement("img"))
+    // const im = useRef<HTMLImageElement>(document.createElement("img"))
+    const wrapper = useRef<HTMLDivElement>(document.createElement('div'))
+    const imgPath =  (poster_path && `http://image.tmdb.org/t/p/original${poster_path}`) || alternative
+    const tinyImage =  (poster_path && `http://image.tmdb.org/t/p/w200${poster_path}`) || alternative
 
-    const imgPath =  (poster_path && `http://image.tmdb.org/t/p/w400${poster_path}`) || alternative
-
-    // const onStart = (e:DraggableEvent,ui:any) => {
-
-    // }
-    // const onDrag = (e:DraggableEvent,ui:any) => {
-
-    // }
     
-    const onStop = (e:any,ui:any) => {
-        if(ui.x>0){
-            watchLater({id,title,overview,imgPath});
-        }
+    const onStop = (e:DraggableEvent,ui:any) => {
+      if(ui.x > 150){
+        watchLater({id,title,overview,imgPath})
         remove(id)
-
+      }else if (ui.x<-150){
+        remove(id)
+      } 
     }
+
     const dragEvents = {
-        // onStart,
-        // onDrag,
         onStop
     }
-    const onScroll = (e:any) => {
-      console.log(e.target.scrollTop)
+    const onClick = (e:any) => {  
+      console.log('clicked')
+      setDragDissable(true);
     }
 
-    const onLoad = (e:any) =>{
-      console.log(e.target.complete)
-      setSpiner(false)
-    }
-    const onError = () => {
-      im.current.src=alternative
-      console.log(im)
-  debugger
+    const dragEnableClick = (e:any) => {
+      e.stopPropagation()
+      wrapper.current.scroll(0,0);
+      setDragDissable(false)
     }
 
     return (
-<>
-              <Draggable  onStop={onStop}  axis="x"  position={{x:0,y:0}} allowAnyClick={true}>   
-                     <div style={{overflowY:"scroll",width:"100%",height:"100vh",textAlign:"center"}}>
-                       <div>
 
-
-                        {spiner && <Loader/>}
-                       <img ref={im} onLoad={onLoad} onError={onError} src={imgPath}   alt={title}></img>
-                       <span style={{position:"absolute",bottom:"1rem",left:"1rem",color:"white"}}>
-                         {title}
-                       </span>
-                       <p> 
+              <Draggable axis="x"  {...dragEvents} position={{x:0,y:0}} disabled={dragDissable}  >
+               
+                     <Wrapper ref={wrapper} onClick={onClick}  scrollable={dragDissable}  >
+                    
+                      <div className='image' style={{position:"relative"}}>
+                      {/* <Img src={`${imgPath}`} alt={`${title}`}/> */}
+                      <ProgressiveImage src={imgPath} placeholder={tinyImage}>
+                        {(src:string,loading:boolean) => 
+                        <img style={{filter: loading ? 'blur(8px)' : 'none'}} src={src} alt={title}/>}
+                      </ProgressiveImage>
+                      {dragDissable &&  <button onClick={dragEnableClick} style={{position:"absolute",right:"1rem",bottom:"1rem"}}>click</button>}
+                      
+                      </div>
+                      <div>id: {id}</div>
+                      <div>genre_ids: {genre_ids}</div>
+                      <div>release_date: {release_date}</div>
+                      <div>vote_count: {vote_count}</div>
+                      <div>vote_average: {vote_average}</div>
+   
+                         <div> 
+                        <ActorsContainer/>
+                        </div>
+                        <div>
+                          <Video/>
+                        </div>
+                       <p>
                        {overview} 
                      </p>
-                     </div>
+
+                     {dragDissable && <div style={{position:"absolute",left:"1rem",bottom:"1rem"}}>camon</div>}
+
+                     </Wrapper>
 
 
-                     </div>
               </Draggable>
-</>
+            
       )
 }
 

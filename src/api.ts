@@ -35,12 +35,12 @@ export const getMovieDetails = (id:number) => {
 }
 
 export const getMovieVideos = (id:number) => {
-    return movies.get(`${id}/videos`)
+    return movies.get(`movie/${id}/videos`)
 }
 
 
 export const getCredits = (id:number) => {
-    return movies.get(`${id}/credits`)
+    return movies.get(`movie/${id}/credits`)
 }
 
 interface Idata {
@@ -58,8 +58,9 @@ export const movieDiscover = (page?:number,data?:Idata) => {
         {...data,
             page,
             with_genres,
-            ["primary_release_date.gte"]: dateGte,
-            ["primary_release_date.lte"]: dateLte,
-            ["vote_average.gte"]: rate,
+            "primary_release_date.gte": dateGte,
+            "primary_release_date.lte": dateLte,
+            "vote_average.gte": rate,
+            "sort_by":"vote_count.desc"
         }})
 }

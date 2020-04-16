@@ -1,15 +1,15 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import {getGenres, getFilters, getPage, getBlockList} from '../../selectors'
+import {getGenres, getFilters, getBlockList} from '../../selectors'
 import {setPageAC,getMovieThunk} from '../../redux/reducers/movieReducer'
 import {setFiltersAC} from '../../redux/reducers/filterReducer'
 import Filters from './Filters'
 
 
 
-function FiltersContainer({blocklist,filters,page,setFiltersAC,setPageAC,genres,getMovieThunk}:any) {
+function FiltersContainer({blocklist,filters,setFiltersAC,genres,getMovieThunk}:any) {
     return (  <>
-        { !!genres ? <Filters blocklist={blocklist} filters={filters} page={page} setPage={setPageAC} getMovieThunk={getMovieThunk} setFilters={setFiltersAC}  genres={genres}/> : <h1>loading</h1>}
+        { !!genres ? <Filters blocklist={blocklist} filters={filters}  getMovieThunk={getMovieThunk} setFilters={setFiltersAC}  genres={genres}/> : <h1>loading</h1>}
         </>
     )
 }

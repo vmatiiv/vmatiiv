@@ -7,7 +7,7 @@ function WatchLaterContainer({movies,removeFromWatchListAC}:any) {
     console.log('watch later rerendered')
     return (
         <>
-           {!!movies.length ? <WatchLater movies={movies} remove={removeFromWatchListAC}/>: <h1>nothing here</h1>}
+           {!!movies.length ? <WatchLater movies={movies} remove={removeFromWatchListAC}/> : <h1>nothing here</h1>}
         </>
     )
 }
