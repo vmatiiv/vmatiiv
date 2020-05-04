@@ -1,9 +1,11 @@
 import React from 'react'
 import styled from 'styled-components'
+import Img from '../common/Img'
+
 const Item = styled.div`
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
+  display:grid;
+  grid-template-columns:1fr 2fr;
+  margin: 0.5rem auto;
 `
 const Later = styled.div`
   order:1;
@@ -19,14 +21,23 @@ const Later = styled.div`
       left:0;
   }
 `
+
 function WatchLater({movies,remove}:any) {
 
-const list = movies.map((x:any) => 
-    <Item key={x.id}>
-       <img src={x.imgPath} width="100px" height="100px" alt={x.title}/>
-        <h1>{x.title}</h1>
-        <button onClick={()=>remove(x.id)}>delete This</button>
-    </Item> )
+
+    const list = movies.map((x:any) => 
+            <Item key={x.id}>
+                <div>
+                    <Img  src={x.poster_path} alt={x.title}/>
+                </div>
+                <div style={{margin:"0 auto"}}>
+                    <h1>{x.title}</h1>
+                    <button onClick={()=>remove(x.id)}>delete</button>
+                </div>
+
+
+            </Item>
+    )
     return (
         <Later>
             {list}

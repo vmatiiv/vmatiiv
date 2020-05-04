@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { connect } from 'react-redux'
 import {getMovies, getFilters, getPage,notFound,getBlockList, isLoading} from '../../selectors'
 import {getMovieThunk,removeMovieAC,getActorsThunk,getVideoThunk} from '../../redux/reducers/movieReducer'
@@ -7,17 +7,20 @@ import MovieItem from './MovieItem'
 import Loader from '../common/Loader'
 
 function MovieListContainer({getVideoThunk,getActorsThunk,page,notFound,isLoading,blocklist,movies,filters,getMovieThunk,addToWatchListAC,removeMovieAC}:any) {
-
+    const [dragDissable,setDragDissable] = useState(false);
     useEffect(()=>{
-        if( !movies && navigator.onLine ){
-            console.log('yip')
+        console.log(!movies)
+        console.log(navigator.onLine)
+        if( movies.length<1 && navigator.onLine ){
             getMovieThunk(blocklist,page+1,filters)
         }
         else {
-            getActorsThunk(movies.id);
-            getVideoThunk(movies.id);
+            getActorsThunk(movies[0].id);
+            getVideoThunk(movies[0].id);
         }
-    })
+        console.log('disabled')
+        setDragDissable(false)
+    },[movies])
 
     const handleKeys = (e:any) => {
         switch (e.key){
@@ -42,11 +45,12 @@ function MovieListContainer({getVideoThunk,getActorsThunk,page,notFound,isLoadin
         document.addEventListener('keydown',handleKeys)
         return () => document.removeEventListener('keydown',handleKeys)
       })
-
+// dragDissable={dragDissable} setDragDissable={setDragDissable}
     if(!navigator.onLine) return <h1>no internet connection</h1> 
-    if(notFound) return <h1>not found movie by your query</h1>
+    if(notFound) return <h1>I can`t find movie by your filters, try to change it</h1>
     if(isLoading ) return <Loader/>
-    return <MovieItem {...movies} remove={removeMovieAC} watchLater={addToWatchListAC}  />
+    const list = movies.map((x:any) => <MovieItem {...x} drag={false} remove={removeMovieAC} watchLater={addToWatchListAC}/>)
+    return <> {list} </>
 }
 const mapStateToProps = (store:any) => ({
     movies:getMovies(store),
@@ -56,13 +60,14 @@ const mapStateToProps = (store:any) => ({
     isLoading:isLoading(store),
     notFound:notFound(store),
 
+
 })
 const mapDispatchToProps = {
     getMovieThunk,
     addToWatchListAC,
     removeMovieAC,
     getActorsThunk,
-    getVideoThunk
+    getVideoThunk,
 }
 
-export default connect(mapStateToProps,mapDispatchToProps)(MovieListContainer)
+export default React.memo(connect(mapStateToProps,mapDispatchToProps)(MovieListContainer))

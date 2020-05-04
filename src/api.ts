@@ -31,7 +31,7 @@ export const getUpcomingMovies = (page:number) => {
 }
 
 export const getMovieDetails = (id:number) => {
-    return movies.get(`${id}`)
+    return movies.get(`movie/${id}`)
 }
 
 export const getMovieVideos = (id:number) => {

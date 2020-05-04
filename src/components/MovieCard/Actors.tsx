@@ -2,7 +2,24 @@ import React,{useState, useEffect} from 'react'
 import {Swipeable} from 'react-swipeable'
 import { getActors } from '../../selectors';
 import { connect } from 'react-redux';
+import styled from 'styled-components';
+import Img from '../common/Img';
 
+const Wrapper = styled.div`
+    position:relative;
+    .character{
+        position:absolute;
+        width:100%;
+        background-color: rgba(0,0,0,0.5);
+        left:0;
+        bottom:0;
+        color:white;
+        margin:0;
+        h3,h4{
+            padding:0 1rem;
+        }
+    }
+`
 function Actors({cast,index,left,right}:any) {
 
     const config = {
@@ -10,18 +27,21 @@ function Actors({cast,index,left,right}:any) {
         trackMouse: true,  
         delta: 10,
         rotationAngle: 0,
-        preventDefaultTouchmoveEvent: false,
+        preventDefaultTouchmoveEvent: true,
       }
-  
-    const imgPath = `http://image.tmdb.org/t/p/w400${cast[index].profile_path}`
+    
     return  (
-        <Swipeable style={{position:"relative"}} onSwipedRight={()=>right()} onSwipedLeft={()=>left()} {...config}>
-            
-                <img src={imgPath} alt="gnuda"/>
-                <h1 style={{position:"absolute",left:"1rem",bottom:"3rem",color:"white"}}>{cast[index].name}</h1>
-                <h2 style={{position:"absolute",left:"1rem",bottom:"1rem",color:"white"}}>{cast[index].character}</h2>
-            
-        </Swipeable>
+        <Wrapper>
+            <Swipeable onSwipedRight={(e)=>right(e)} onSwipedLeft={()=>left()} {...config}>
+                <Img src={cast[index].profile_path} alt={cast[index].name}/>
+
+                <div className='character'>
+                    <h3>{cast[index].character}</h3>
+                    <h4>{cast[index].name}</h4>
+                </div>
+
+            </Swipeable>
+        </Wrapper>
     )
 }
 const mapStateToProps = (store:any) => ({
@@ -30,6 +50,7 @@ const mapStateToProps = (store:any) => ({
 
 function ActorsContainer({cast}:any) {
     const [index,setIndex] = useState(0);
+
     useEffect(()=>{
         setIndex(0)
     },[cast])
@@ -38,7 +59,8 @@ function ActorsContainer({cast}:any) {
       setIndex((index+1) % cast.length)
     }
 
-    const right = () => {
+    const right = (e:any) => {
+        console.log(e)
         index === 0 ? setIndex(cast.length -1) : setIndex((index-1) % cast.length)
     }
     return cast ? <Actors cast={cast} index={index} left={left} right={right}/> : null

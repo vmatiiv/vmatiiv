@@ -2,12 +2,13 @@ import React, {   useEffect } from 'react';
 import WatchLater from './components/WatchLater'
 import FiltersContainer from './components/Filters'
 import MovieCardContainer from './components/MovieCard/MovieListContainer'
-import {Route} from 'react-router-dom'
+import {Route,Switch} from 'react-router-dom'
 import { getGenresThunk} from './redux/reducers/filterReducer'
 import { connect } from 'react-redux';
 
 import styled from 'styled-components';
 import NavHOC from './HOC/NavHOC'
+import MovieDescription from './components/MovieCard/MovieDescription';
 
 const Wrapper = styled.div` 
   width:100vw;
@@ -22,21 +23,13 @@ const StyledApp = styled.div`
   position:relative;
 
 `
-
-// const StyledApp = styled.div`
-//   display:grid;
-//   position:relative;
-//   grid-template-columns: 1fr 2fr 1fr;
-//   @media (min-width:502px){
-//     grid-template-areas: 'later main  filters';
-//   }
-//   @media (max-width:500px) {
-//     grid-template-columns:1fr;
-//     grid-template-rows:1fr 1fr;
-//   }
-// `
-
-
+const Navigation = styled.div`
+  display:flex;
+  justify-content:space-around;
+  align-items:center;
+  height:5vh;
+  background-color:black;
+`
 const Main = styled.div`
   order:2;
   flex-grow:2;
@@ -51,32 +44,24 @@ function App({getGenresThunk}:any) {
 
   useEffect(()=>{
     getGenresThunk()
-    console.log('get genres')
   });
 
   return (
     <Wrapper onKeyDown={()=>{console.log('clicked')}}>
 
-        <nav style={{display:"flex",justifyContent:"space-around",alignItems:"center", height:"5vh",backgroundColor:"red"}}>
-        
+        <Navigation> 
           <NavHOC title={'watch later'} to={'/watch-later'}/>
           <NavHOC title={'filters'} to={'/filters'}/>
-        </nav>
+        </Navigation>
 
         <StyledApp className="something">
           <Main>  
-            <Route path="/" component={MovieCardContainer}/>  
+              <Route path="/"  component={MovieCardContainer}/>
           </Main>
-
-          {/* <Later > */}
             <Route path="/watch-later" component={WatchLater}/>
-          {/* </Later>  */}
-          {/* <Filters> */}
             <Route path="/filters" component = {FiltersContainer}/>
-          {/* </Filters>  */}
-
-
         </StyledApp>
+
     </Wrapper >
   );
 }

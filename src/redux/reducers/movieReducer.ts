@@ -1,4 +1,4 @@
-import {movieDiscover,getCredits,getMovieVideos} from '../../api'
+import {movieDiscover,getCredits,getMovieVideos,getMovieDetails} from '../../api'
 import { Dispatch } from 'redux'
 
 interface IAction {
@@ -12,10 +12,10 @@ const LOADING = "LOADING"
 const NOT_FOUND = "NOT_FOUND"
 const GET_VIDEO = "GET_VIDEO"
 const GET_ACTORS = "GET_ACTORS"
-const NET_ERROR = "NET_ERROR"
 export const movieReducer = (initialState:any) => (state=initialState,{type,payload}:IAction)=>{
     switch (type) {
         case GET_MOVIES:
+ 
             return {
                 ...state,
                 page:payload.resultPage,
@@ -24,17 +24,18 @@ export const movieReducer = (initialState:any) => (state=initialState,{type,payl
                 notFound:false
             }
         case GET_ACTORS :
-            return {...state,actors:payload}
+            return {...state,
+                actors:payload.actorsList,
+                directors:payload.Director}
         case LOADING:
-            return {...state,isLoading:true};
+            return {...state,isLoading:payload};
         case SET_PAGE:
             return {...state,page:1}
         case NOT_FOUND:
             return {...state,notFound:true}
+        
         case GET_VIDEO:
-            return {...state,video:payload}   
-        case NET_ERROR:
-            return {...state,netError:true}     
+            return {...state,video:payload}    
         case REMOVE_MOVIE:
             return {
                 ...state,
@@ -51,19 +52,22 @@ export const movieReducer = (initialState:any) => (state=initialState,{type,payl
 export const setPageAC = () => ({type:SET_PAGE})
 const setNotFound = () => ({type:NOT_FOUND})
 
-const loadingAC = () => ({type:LOADING});
+const loadingAC = (loading:boolean) => ({type:LOADING,payload:loading});
 export const removeMovieAC = (id:number) => ({type:REMOVE_MOVIE,payload:id})
 
-const netIssueAC = () => ({type:NET_ERROR})
 const getActorsAC = (actors:any) => ({type:GET_ACTORS,payload:actors})
 export const getActorsThunk = (id:number) => async (dispatch:Dispatch) => {
+    console.log(id)
     try {
         const actors = await getCredits(id);
-        const filteredList = actors.data.cast.filter((x:any) => !!x.profile_path && !x.character.toLowerCase().includes('(uncredited)')).slice(0,15)
-        dispatch(getActorsAC(filteredList))
-            
+        const filteredList = 
+            (actors.data.cast.filter((x:any) => !!x.profile_path && !x.character.toLowerCase().includes('(uncredited)')).slice(0,15))
+        const actorsList = filteredList.length === 0 ? null : filteredList
+        const Director = actors.data.crew.filter((x:any)=> x.job.toLowerCase().match(/^director$/g))
+        dispatch(getActorsAC({actorsList ,Director}))    
+        
     } catch (error) {
-        dispatch(netIssueAC())
+
         dispatch(getActorsAC(null))  
 
     }
@@ -84,23 +88,34 @@ export const getVideoThunk = (id:number) => async (dispatch:Dispatch) => {
 
 
 
-
 const getMoviesAC = (data:any) => ({type:GET_MOVIES,payload:data})
 
 export const getMovieThunk = (blocklist:[number],page?:any,filters?:any) => async (dispatch:Dispatch)=>{
-    dispatch(loadingAC());
-    const movies = await movieDiscover(page,filters);
+    dispatch(loadingAC(true));
+    try {
+        const movies = await movieDiscover(page,filters);
 
-    if(movies.data.total_results === 0){
-        return dispatch(setNotFound())
+        if(movies.data.total_results === 0){
+            return dispatch(setNotFound())
+        }
+        if(page > movies.data.total_pages){
+            return dispatch(setNotFound())
+        }
+        const resultPage =  movies.data.page;
+        const list =  movies.data.results
+          .filter((x:any) => {
+              return !blocklist.includes(x.id)
+          })
+          .map(async (x:any) =>{
+              const z = await getMovieDetails(x.id); 
+              return z.data
+          })
+        Promise.all(list).then(filteredList=>dispatch(getMoviesAC({resultPage,filteredList})))
+            
+    } catch (error) {
+        console.log(error)
+        dispatch(loadingAC(false))
     }
-    if(page > movies.data.total_pages){
-        return dispatch(setNotFound())
-    }
-    const resultPage =  movies.data.page;
-    const filteredList = movies.data.results.filter((x:any) => {
-        return !blocklist.includes(x.id)
-    })
     
-    dispatch(getMoviesAC({resultPage,filteredList}))
+
 }
