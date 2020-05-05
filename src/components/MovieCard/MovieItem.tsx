@@ -16,58 +16,51 @@ interface IMovieItem {
     watchLater: any,
     remove: any,
     drag:boolean,
+    nextImage:string,
+    backdrop_path:string,
     // dragDissable:boolean,
     // setDragDissable:any,
     overview:any
 }
 const Wrapper = styled.div<{scrollable:boolean}>`
   position:relative;
-  touch-action:pan-y ;
-  overflow-x:hidden;
+  /* touch-action:pan-y ; */
+  /* overflow-x:hidden; */
+  cursor: pointer;
+  overflow:hidden;
   font-size: 1rem;
-  cursor:'pointer';
-  overflow-y:${props => props.scrollable ? 'scroll' : 'hidden'};
+  /* overflow-y:${props => props.scrollable ? 'scroll' : 'hidden'}; */
   height:95vh;
   margin: 0 auto;
   min-width: 360px;
   max-width: 600px;
-  background-color:#000;
   color:white;
-  .image{
-    position:relative;
-    height:${props => props.scrollable ? '80%' : '100%'};
-  }
-  
+
 `
-
-const MovieItem = ({id,title,drag,remove,overview,watchLater,poster_path}:IMovieItem) => {
+const Button = styled.button`
+  position:relative;
+  height:95vh;
+  margin:0;
+  padding:0;
+  outline:none;
+  border:none;
+`
+const MovieItem = ({id,title,drag,remove,overview,watchLater,nextImage,backdrop_path,poster_path}:IMovieItem) => {
     const [dragDissable,setDragDissable] = useState(drag);
-    const wrapper = useRef<HTMLDivElement>(document.createElement('div'))
-    wrapper.current.scroll(0,0);
 
-    const onStop = (e:DraggableEvent,ui:any) => {
-      if(ui.x > 150){
-        addToLater();
-      }else if (ui.x<-150){
-        remove(id)
 
-      } 
-    }
 
     const addToLater = () => {
       watchLater({id,title,overview,poster_path})
       remove(id)
     }
-    const dragEvents = {
-        onStop,
-    }
+
     const onClick = () => { 
       console.log('clicked') 
       !dragDissable ? setDragDissable(true) : dragEnableClick();
     }
 
     const dragEnableClick = () => {
-      wrapper.current.scroll(0,0);
       setDragDissable(false)
     }
     const handleOnSwipe = (swipeDirection:any) => {
@@ -84,32 +77,39 @@ const MovieItem = ({id,title,drag,remove,overview,watchLater,poster_path}:IMovie
         return;
       }
     }
-    const swipeConfig = {
-      swipeLeft:{
-        content:<div style={{position:"absolute",right:0}}>gnuda</div>,
-        action: () => addToLater()
-      },
-      swipeRight:{
-        content:<div style={{position:"absolute",left:0}}>tuda</div>,
-        action: () => remove(id),
-      },
-      actionAnimation:"REMOVE"
-    }
+
+    // const swipeConfig = {
+    //   swipeLeft:{
+    //     content:<Left></Left>,
+    //     action: () => remove(id)
+    //   },
+    //   swipeRight:{
+    //     content:<Right></Right>,
+    //     action: () => addToLater()
+    //   },
+    //   threshold:0.25
+    // }
+    
     return (
-      <SwipeableList >
-          <SwipeableListItem  {...swipeConfig} blockSwipe={dragDissable}>
-            <Wrapper ref={wrapper}  onClick={onClick} scrollable={dragDissable} >
-                <Img src={poster_path} alt={title}/>
-                <MovieDescription/> 
-            </Wrapper>
-             {/* {dragDissable && 
-             <div style={{position:"absolute",left:"1rem",width:"100%",height:"20px",bottom:"1rem"}}>
-               <button onClick={addToLater}> click</button>
-               </div>} */}
-          </SwipeableListItem>
+      <Wrapper scrollable={dragDissable} >
+
+      <Swipeable  onSwipe={handleOnSwipe} >
+        <Button>
+                    <Link onClick={onClick} to="/description">info</Link>
+                    <Img src={poster_path} alt={title}/>
+        </Button>
         
-        </SwipeableList>
-      )
+        </Swipeable>
+
+        {/* <div style={{position:"absolute",height:"95vh",top:0,left:0,zIndex:-1}}>
+                      <Img src={backdrop_path} alt={title}/>
+                    </div> */}
+
+          </Wrapper>
+
+
+
+      ) 
 }
 
 export default MovieItem

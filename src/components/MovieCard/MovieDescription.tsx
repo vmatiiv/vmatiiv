@@ -1,8 +1,11 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import Video from './Video'
 import ActorsContainer from './Actors'
 import { getMovies, getDirectors } from '../../selectors'
 import { connect } from 'react-redux'
+import { Link } from 'react-router-dom'
+import styled from 'styled-components'
+import { getActorsThunk, getVideoThunk } from '../../redux/reducers/movieReducer'
 
 interface MovieDescription{
     directors:any,
@@ -17,15 +20,25 @@ interface MovieDescription{
     }
 }
 
+const Wrap = styled.div`
+  height:95vh;
+  margin: 0 auto;
+  overflow-y:auto;
+  min-width: 360px;
+  max-width: 600px;
+  background-color:#000;
+  color:white;
+`
 function MovieDescription({movie:{release_date,budget,revenue,runtime,genres,overview,vote_average},directors}:MovieDescription) {
     
     const directorList = directors ?  directors.map((x:any) => x.name).join(',') : null
     const genresList = genres ?  genres.map((x:any) => x.name).join(',') : null
 
     return (
-        <div style={{margin:"1rem"}}>
+        <Wrap >
                         
-        <div style={{margin:"0 auto"}}> 
+        <div > 
+            <Link to="/">Up</Link>
             <div>Rate : {vote_average}</div>   
             <div>Year: {release_date?.split('-')[0]}</div>
             {budget !== 0 && 
@@ -47,7 +60,7 @@ function MovieDescription({movie:{release_date,budget,revenue,runtime,genres,ove
            <ActorsContainer/>
            <Video/>
          
-        </div>
+        </Wrap>
     )
 }
 const mapStateToProps = (store:any) => ({
@@ -55,8 +68,13 @@ const mapStateToProps = (store:any) => ({
     directors:getDirectors(store)
 })
 
-const MovieDescriptionContainer = ({directors,movie}:any) => {
+const MovieDescriptionContainer = ({directors,movie,getActorsThunk,getVideoThunk}:any) => {
+    // useEffect(()=>{
+    //     getActorsThunk(movie.id);
+    //     getVideoThunk(movie.id);
+    // },[])
+
     if (!movie) return null
-    return <MovieDescription movie={movie[0]} directors={directors}/>
+    return <MovieDescription movie={movie} directors={directors}/>
 }
-export default connect(mapStateToProps)(MovieDescriptionContainer)
+export default connect(mapStateToProps,{getActorsThunk,getVideoThunk})(MovieDescriptionContainer)

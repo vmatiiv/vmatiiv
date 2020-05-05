@@ -4,12 +4,7 @@ import WatchLater from './WatchLater'
 import { getWatchLaterMovies } from '../../selectors'
 import {removeFromWatchListAC} from '../../redux/reducers/watchLaterReducer'
 function WatchLaterContainer({movies,removeFromWatchListAC}:any) {
-    console.log('watch later rerendered')
-    return (
-        <>
-           {!!movies.length ? <WatchLater movies={movies} remove={removeFromWatchListAC}/> : <h1>nothing here</h1>}
-        </>
-    )
+    return !!movies.length ? <WatchLater movies={movies} remove={removeFromWatchListAC}/> : null
 }
 const mapStateToProps = (store:any) => ({
     movies: getWatchLaterMovies(store) 

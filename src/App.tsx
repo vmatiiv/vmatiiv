@@ -2,7 +2,7 @@ import React, {   useEffect } from 'react';
 import WatchLater from './components/WatchLater'
 import FiltersContainer from './components/Filters'
 import MovieCardContainer from './components/MovieCard/MovieListContainer'
-import {Route,Switch} from 'react-router-dom'
+import {Route} from 'react-router-dom'
 import { getGenresThunk} from './redux/reducers/filterReducer'
 import { connect } from 'react-redux';
 
@@ -56,6 +56,7 @@ function App({getGenresThunk}:any) {
 
         <StyledApp className="something">
           <Main>  
+              <Route path="/description" component={MovieDescription}/>
               <Route path="/"  component={MovieCardContainer}/>
           </Main>
             <Route path="/watch-later" component={WatchLater}/>

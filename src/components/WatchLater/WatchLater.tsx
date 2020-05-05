@@ -10,7 +10,7 @@ const Item = styled.div`
 const Later = styled.div`
   order:1;
   height:95vh;
-  width:100%;
+  width:100vw;
   overflow-y:auto;
   grid-area: later;
   z-index:2;

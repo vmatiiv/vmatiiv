@@ -8,6 +8,7 @@ const Image = styled.img<{isLoading:boolean}>`
     width:100%;
     height:100%;
     object-position: center;
+    pointer-events:none;
     filter: ${props => props.loading ? 'blur(10px)' : 'none'};
     overflow:hidden;
 `

@@ -8,7 +8,7 @@ interface ILink {
 
 function NavHOC({title,to}:ILink) {
     const path = to === '/filters' ? '/watch-later' : '/filters'
-    return <Link to={location =>  `${location.pathname === '/' || location.pathname === path ? to : '/'}` }>{title}</Link>
+    return <Link to={location =>  `${ ( location.pathname === '/' || location.pathname === "/description" || location.pathname === path ) ? to : '/'}` }>{title}</Link>
 }
 
 export default NavHOC

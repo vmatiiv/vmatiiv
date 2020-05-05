@@ -1,22 +1,22 @@
 import React, { useEffect, useState } from 'react'
 import { connect } from 'react-redux'
-import {getMovies, getFilters, getPage,notFound,getBlockList, isLoading} from '../../selectors'
+import {getMovies, getFilters, getPage,notFound,getBlockList, isLoading, getNextImage} from '../../selectors'
 import {getMovieThunk,removeMovieAC,getActorsThunk,getVideoThunk} from '../../redux/reducers/movieReducer'
 import {addToWatchListAC} from '../../redux/reducers/watchLaterReducer'
 import MovieItem from './MovieItem'
 import Loader from '../common/Loader'
 
-function MovieListContainer({getVideoThunk,getActorsThunk,page,notFound,isLoading,blocklist,movies,filters,getMovieThunk,addToWatchListAC,removeMovieAC}:any) {
+function MovieListContainer({getVideoThunk,nextImage,getActorsThunk,page,notFound,isLoading,blocklist,movies,filters,getMovieThunk,addToWatchListAC,removeMovieAC}:any) {
     const [dragDissable,setDragDissable] = useState(false);
     useEffect(()=>{
         console.log(!movies)
         console.log(navigator.onLine)
-        if( movies.length<1 && navigator.onLine ){
+        if( !movies && navigator.onLine ){
             getMovieThunk(blocklist,page+1,filters)
         }
         else {
-            getActorsThunk(movies[0].id);
-            getVideoThunk(movies[0].id);
+            getActorsThunk(movies.id);
+            getVideoThunk(movies.id);
         }
         console.log('disabled')
         setDragDissable(false)
@@ -27,15 +27,15 @@ function MovieListContainer({getVideoThunk,getActorsThunk,page,notFound,isLoadin
             case 'ArrowRight':
                 try{
                 addToWatchListAC({
-                    id:movies.id,
-                    title:movies.title,
-                    overview:movies.overview,
-                    imgPath:movies.poster_path})
-                removeMovieAC(movies.id)
+                    id:movies[0].id,
+                    title:movies[0].title,
+                    overview:movies[0].overview,
+                    poster_path:movies[0].poster_path})
+                removeMovieAC(movies[0].id)
             }catch{} break
             case 'ArrowLeft':
                 try{
-                    removeMovieAC(movies.id)
+                    removeMovieAC(movies[0].id)
                 }catch{} break 
             }
             
@@ -49,8 +49,9 @@ function MovieListContainer({getVideoThunk,getActorsThunk,page,notFound,isLoadin
     if(!navigator.onLine) return <h1>no internet connection</h1> 
     if(notFound) return <h1>I can`t find movie by your filters, try to change it</h1>
     if(isLoading ) return <Loader/>
-    const list = movies.map((x:any) => <MovieItem {...x} drag={false} remove={removeMovieAC} watchLater={addToWatchListAC}/>)
-    return <> {list} </>
+    // const list = movies.map((x:any) => <MovieItem key={x.id} {...x} drag={false} remove={removeMovieAC} watchLater={addToWatchListAC}/>)
+    // return <> {list} </>
+    return <MovieItem {...movies} drag={false} nextImage={nextImage} remove={removeMovieAC} watchLater={addToWatchListAC}/>
 }
 const mapStateToProps = (store:any) => ({
     movies:getMovies(store),
@@ -59,6 +60,7 @@ const mapStateToProps = (store:any) => ({
     blocklist:getBlockList(store),
     isLoading:isLoading(store),
     notFound:notFound(store),
+    nextImage:getNextImage(store)
 
 
 })
