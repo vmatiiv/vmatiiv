@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react'
 import styled from 'styled-components'
 import Img from '../common/Img';
-import { Route, Link, Redirect } from 'react-router-dom';
-import { Swipeable, direction } from 'react-deck-swiper';
-import InfoOutlinedIcon from '@material-ui/icons/InfoOutlined';import Loader from '../common/Loader';
+import { Redirect } from 'react-router-dom';
+import InfoOutlinedIcon from '@material-ui/icons/InfoOutlined';
+import Loader from '../common/Loader';
+import {Swipeable,direction} from 'react-deck-swiper'
 interface IMovieItem {
     id:number,
     title:string,

@@ -1,10 +1,9 @@
-import React, { useEffect, useState, Suspense } from 'react'
+import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
 import {getMovies, getFilters, getPage,notFound,getBlockList, isLoading, getNextImage} from '../../selectors'
 import {getMovieThunk,removeMovieAC,getActorsThunk,getVideoThunk} from '../../redux/reducers/movieReducer'
 import {addToWatchListAC} from '../../redux/reducers/watchLaterReducer'
 import MovieItem from './MovieItem'
-import Loader from '../common/Loader'
 
 function MovieListContainer({getVideoThunk,nextImage,getActorsThunk,page,notFound,isLoading,blocklist,movies,filters,getMovieThunk,addToWatchListAC,removeMovieAC}:any) {
     

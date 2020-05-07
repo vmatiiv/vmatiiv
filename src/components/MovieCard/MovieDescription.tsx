@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import Video from './Video'
 import ActorsContainer from './Actors'
 import { getMovies, getDirectors } from '../../selectors'
@@ -6,7 +6,6 @@ import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 import { getActorsThunk, getVideoThunk } from '../../redux/reducers/movieReducer'
-import { Transition} from 'react-transition-group';
 
 
 interface MovieDescription{
