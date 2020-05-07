@@ -112,7 +112,7 @@ const Main = styled.div`
     z-index:1;
   }
 
-.description{
+/* .description{
   position:absolute;
 }
 .page-enter {
@@ -137,7 +137,7 @@ const Main = styled.div`
   opacity: 0;
   bottom:-170vw;
   transition: all 600ms;
-}
+} */
 `
 
 function App({getGenresThunk}:any) {
@@ -172,7 +172,7 @@ function App({getGenresThunk}:any) {
         <StyledApp className="something">
           <Main className="camon"> 
           <Route path="/" component={MovieCardContainer}/> 
-              <Route path="/description">
+              {/* <Route path="/description">
               {({ match }) => (
                 <CSSTransition
                   in={match != null}
@@ -185,7 +185,7 @@ function App({getGenresThunk}:any) {
                   </div>
                 </CSSTransition>
               )}
-              </Route>
+              </Route> */}
 
           </Main>
 

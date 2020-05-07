@@ -33,7 +33,16 @@ function MovieListContainer({getVideoThunk,nextImage,getActorsThunk,page,notFoun
                     try{
                         removeMovieAC(movies.id)
                     }catch{} break 
-                }
+                // case 'ArrowUp':{
+                //     window.history.pushState('/description')
+                //     break
+                // }
+                // case 'ArrowDown':{
+                //     window.location.assign('/')
+                //     break
+                // }
+            }
+                
                 
           }
         document.addEventListener('keydown',handleKeys)

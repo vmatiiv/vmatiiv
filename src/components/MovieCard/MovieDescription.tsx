@@ -5,8 +5,6 @@ import { getMovies, getDirectors } from '../../selectors'
 import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'
-import { getActorsThunk, getVideoThunk } from '../../redux/reducers/movieReducer'
-
 
 interface MovieDescription{
     directors:any,
@@ -25,14 +23,14 @@ const Wrap = styled.div`
   position:relative;
   overflow:auto;
   font-size: 1rem;
-  box-shadow: 3px 2px 32px 4px rgba(0,0,0,0.48);
   max-width: 375px;
   height: 667px;
+  max-height: 95vh;
   background-color:black;
-  /* max-height: calc(100vh - 99px); */
-  margin: 0 auto;
   color:white;
-  
+  &::-webkit-scrollbar{
+        display:none;
+  }
 `
 function MovieDescription({movie:{release_date,budget,revenue,runtime,genres,overview,vote_average},directors}:MovieDescription) {
     
@@ -76,13 +74,8 @@ const mapStateToProps = (store:any) => ({
     directors:getDirectors(store)
 })
 
-const MovieDescriptionContainer = ({directors,movie,getActorsThunk,getVideoThunk}:any) => {
-    // useEffect(()=>{
-    //     getActorsThunk(movie.id);
-    //     getVideoThunk(movie.id);
-    // },[])
-
+const MovieDescriptionContainer = ({directors,movie}:any) => {
     if (!movie) return null
     return <MovieDescription movie={movie} directors={directors}/>
 }
-export default connect(mapStateToProps,{getActorsThunk,getVideoThunk})(MovieDescriptionContainer)
+export default connect(mapStateToProps)(MovieDescriptionContainer)
