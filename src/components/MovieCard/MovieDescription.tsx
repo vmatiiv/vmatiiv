@@ -6,6 +6,8 @@ import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 import { getActorsThunk, getVideoThunk } from '../../redux/reducers/movieReducer'
+import { Transition} from 'react-transition-group';
+
 
 interface MovieDescription{
     directors:any,
@@ -21,46 +23,53 @@ interface MovieDescription{
 }
 
 const Wrap = styled.div`
-  height:95vh;
+  position:relative;
+  overflow:auto;
+  font-size: 1rem;
+  box-shadow: 3px 2px 32px 4px rgba(0,0,0,0.48);
+  max-width: 375px;
+  height: 667px;
+  background-color:black;
+  /* max-height: calc(100vh - 99px); */
   margin: 0 auto;
-  overflow-y:auto;
-  min-width: 360px;
-  max-width: 600px;
-  background-color:#000;
   color:white;
+  
 `
 function MovieDescription({movie:{release_date,budget,revenue,runtime,genres,overview,vote_average},directors}:MovieDescription) {
     
     const directorList = directors ?  directors.map((x:any) => x.name).join(',') : null
     const genresList = genres ?  genres.map((x:any) => x.name).join(',') : null
 
-    return (
-        <Wrap >
-                        
-        <div > 
-            <Link to="/">Up</Link>
-            <div>Rate : {vote_average}</div>   
-            <div>Year: {release_date?.split('-')[0]}</div>
-            {budget !== 0 && 
-             <>
-              <div>Budget: {`${budget}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")}$</div>
-              {revenue !== 0 && <div>Revenue: {`${revenue}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")}$</div>}
-             </>}
-            
-            
-            <div>Genres: {genresList}</div>
-            <div>Directors: {directorList}</div>
-            <div>Runtime: {runtime}min</div>
-         </div>
 
-            <p>
-             {overview} 
-            </p>
-    
-           <ActorsContainer/>
-           <Video/>
-         
-        </Wrap>
+    return (
+
+            <Wrap>
+
+            <div > 
+                <Link to="/">Up</Link>
+                <div>Rate : {vote_average}</div>   
+                <div>Year: {release_date?.split('-')[0]}</div>
+                {budget !== 0 && 
+                 <>
+                  <div>Budget: {`${budget}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")}$</div>
+                  {revenue !== 0 && <div>Revenue: {`${revenue}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")}$</div>}
+                 </>}
+                
+                
+                <div>Genres: {genresList}</div>
+                <div>Directors: {directorList}</div>
+                <div>Runtime: {runtime}min</div>
+             </div>
+
+                <p>
+                 {overview} 
+                </p>
+                
+               <ActorsContainer/>
+               <Video/>
+                
+            </Wrap>
+       
     )
 }
 const mapStateToProps = (store:any) => ({

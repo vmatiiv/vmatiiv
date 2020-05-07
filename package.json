@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "@material-ui/core": "^4.9.12",
+    "@material-ui/icons": "^4.9.1",
     "@sandstreamdev/react-swipeable-list": "^0.5.0",
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.5.0",
@@ -13,24 +14,17 @@
     "@types/react": "^16.9.34",
     "@types/react-dom": "^16.9.7",
     "axios": "^0.19.2",
-    "final-form": "^4.19.1",
     "react": "^16.13.1",
-    "react-deck-swiper": "^1.0.9",
     "react-dom": "^16.13.1",
-    "react-draggable": "^4.3.1",
-    "react-final-form": "^6.4.0",
     "react-progressive-image": "^0.6.0",
     "react-redux": "^7.2.0",
     "react-router-dom": "^5.1.2",
     "react-scripts": "3.4.1",
-    "react-suspense-image-loader": "^1.0.19",
     "react-swipeable": "^5.5.1",
     "react-transition-group": "^4.3.0",
     "redux": "^4.0.5",
     "redux-thunk": "^2.3.0",
-    "reselect": "^4.0.0",
     "styled-components": "^5.1.0",
-    "styled-transition-group": "^2.0.1",
     "typescript": "^3.8.3"
   },
   "scripts": {
@@ -60,7 +54,6 @@
     "@types/react-router-dom": "^5.1.5",
     "@types/react-transition-group": "^4.2.4",
     "@types/styled-components": "^5.1.0",
-    "redux-devtools-extension": "^2.13.8",
-    "why-did-you-update": "^1.0.8"
+    "redux-devtools-extension": "^2.13.8"
   }
 }

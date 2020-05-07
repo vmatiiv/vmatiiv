@@ -4,10 +4,11 @@ import alternative from '../../alternative.jpg'
 import ProgressiveImage from 'react-progressive-image';
 
 
-const Image = styled.img<{isLoading:boolean}>`
+const Image = styled.img<{isLoading:boolean,maxWidth?:string}>`
     width:100%;
     height:100%;
     object-position: center;
+    min-width: ${props => props.maxWidth || null};
     pointer-events:none;
     filter: ${props => props.loading ? 'blur(10px)' : 'none'};
     overflow:hidden;
@@ -16,9 +17,10 @@ const Image = styled.img<{isLoading:boolean}>`
 interface IImg {
     src:string,
     alt:string,
+    maxWidth?:string
 }
-function Img({src,alt}:IImg) {
-    const imgPath = `http://image.tmdb.org/t/p/original${src}`
+function Img({src,alt,maxWidth}:IImg) {
+    const imgPath = `http://image.tmdb.org/t/p/w400${src}`
     const tinyImg=  `http://image.tmdb.org/t/p/w200${src}`
     const onError = (e:any) => {
         e.target.src = alternative;
@@ -27,7 +29,7 @@ function Img({src,alt}:IImg) {
     return (
         <ProgressiveImage src={imgPath} placeholder={tinyImg}>
 
-            {(src:string,loading:boolean) => <Image onError={onError} src={src} isLoading={loading} alt={alt}/>}
+            {(src:string,loading:boolean) => <Image  onError={onError} src={src} maxWidth={maxWidth} isLoading={loading} alt={alt}/>}
 
         </ProgressiveImage>
   )

@@ -1,7 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
 import Img from '../common/Img'
-
 const Item = styled.div`
   display:grid;
   grid-template-columns:1fr 2fr;
@@ -10,7 +9,7 @@ const Item = styled.div`
 const Later = styled.div`
   order:1;
   height:95vh;
-  width:100vw;
+  width:100%;
   overflow-y:auto;
   grid-area: later;
   z-index:2;
@@ -19,7 +18,8 @@ const Later = styled.div`
       position:absolute;
       top:0;
       left:0;
-  }
+      width:100vw;
+  } 
 `
 
 function WatchLater({movies,remove}:any) {
@@ -28,7 +28,7 @@ function WatchLater({movies,remove}:any) {
     const list = movies.map((x:any) => 
             <Item key={x.id}>
                 <div>
-                    <Img  src={x.poster_path} alt={x.title}/>
+                    <Img  src={x.poster_path}  alt={x.title}/>
                 </div>
                 <div style={{margin:"0 auto"}}>
                     <h1>{x.title}</h1>
@@ -39,9 +39,10 @@ function WatchLater({movies,remove}:any) {
             </Item>
     )
     return (
-        <Later>
-            {list}
-        </Later>
+            <Later>
+                {list}
+            </Later>
+
     )
 }
 

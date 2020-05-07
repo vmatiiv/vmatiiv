@@ -18,15 +18,14 @@ interface IFilters {
 }
 
 const Wraper = styled.div`
-    order:3;
     z-index:2;
     background-color:white;
     height:95vh;
-    width:100vw;
     @media (max-width:500px){
       position:absolute;
       top:0;
-      left:0;
+      right:0;
+      width:100vw;
   }
 `
 
