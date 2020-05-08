@@ -61,6 +61,6 @@ export const movieDiscover = (page?:number,data?:Idata) => {
             "primary_release_date.gte": dateGte,
             "primary_release_date.lte": dateLte,
             "vote_average.gte": rate,
-            "sort_by":"vote_count.desc"
+            "sort_by":"popularity.desc"
         }})
 }

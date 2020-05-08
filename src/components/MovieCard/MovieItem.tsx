@@ -20,20 +20,22 @@ interface IMovieItem {
 }
 
 const Wrapper = styled.div`
-  position:relative;
+  position:absolute;
+  left:0;
+  top:0;
   overflow:hidden;
   border-radius:20px;
   font-size: 1rem;
-  max-width: 375px;
-  box-shadow: 3px 2px 32px 4px rgba(0,0,0,0.48);
+  max-width: 100%;
   height: 667px;
   max-height: 95vh;
+  box-shadow: 3px 2px 32px 4px rgba(0,0,0,0.48);
   margin: 0 auto;
   color:white;
   .description{
-  position:absolute;
-  bottom:0;
-  left:0;
+    position:absolute;
+    bottom:0;
+    left:0;
 }
 .page-enter {
   opacity: 0;
@@ -55,7 +57,7 @@ const Wrapper = styled.div`
 
 .page-exit-active {
   opacity: 0;
-  bottom:-100%;
+  bottom:100%;
   transition: all 600ms;
 }
 
@@ -117,23 +119,23 @@ const MovieItem = ({id,title,remove,overview,watchLater,nextImage,backdrop_path,
     }
 
     return (
+
       <Wrapper  >
         {dragDissable && <Redirect to="/description"/>}
-        {loading && <Loader/>}
-        <Swipeable  onSwipe={handleOnSwipe} >
-
+        {/* {loading && <Loader/>} */}
+      <Swipeable  onSwipe={handleOnSwipe} >
           <Button >
             <Img src={poster_path} alt={title}  maxWidth={"375px"}/>
             {/* <button onClick={onClick} style={{position:"absolute",margin:0,padding:0,border:0,left:"50%",top:"1rem"}}>  </button> */}
             {/* <img className="info" src={info} alt="info"/> */}
             <InfoOutlinedIcon className="info" onClick={onClick}/>
-          </Button>
+          </Button> 
         
-        </Swipeable>
-
+      </Swipeable>
+{/* 
         <NextImage>
           <Img src={nextImage} alt={title} maxWidth={"375px"}/>
-        </NextImage>
+        </NextImage> */}
         <Route path="/description">
               {({ match }) => (
                 <CSSTransition

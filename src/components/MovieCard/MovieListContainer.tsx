@@ -4,16 +4,25 @@ import {getMovies, getFilters, getPage,notFound,getBlockList, isLoading, getNext
 import {getMovieThunk,removeMovieAC,getActorsThunk,getVideoThunk} from '../../redux/reducers/movieReducer'
 import {addToWatchListAC} from '../../redux/reducers/watchLaterReducer'
 import MovieItem from './MovieItem'
+import styled from 'styled-components'
+
+const Some = styled.div`
+    position:relative;
+    width:100%;
+    max-width: 375px;
+    max-height: 95vh;
+    height: 667px;
+`
 
 function MovieListContainer({getVideoThunk,nextImage,getActorsThunk,page,notFound,isLoading,blocklist,movies,filters,getMovieThunk,addToWatchListAC,removeMovieAC}:any) {
     
     useEffect(()=>{
-        if( !movies && navigator.onLine ){
+        if( movies.length<3 && navigator.onLine ){
             getMovieThunk(blocklist,page+1,filters)
         }
         else {
-            getActorsThunk(movies.id);
-            getVideoThunk(movies.id);
+            getActorsThunk(movies[0].id);
+            getVideoThunk(movies[0].id);
         }
     },[movies])
 
@@ -57,12 +66,15 @@ function MovieListContainer({getVideoThunk,nextImage,getActorsThunk,page,notFoun
 
 
 // dragDissable={dragDissable} setDragDissable={setDragDissable}
-    // const list = movies.map((x:any) => <MovieItem key={x.id} {...x} drag={false} remove={removeMovieAC} watchLater={addToWatchListAC}/>)
-    // return <> {list} </>
+    // const list = movies.map((x:any) => <MovieItem key={x.id} nextImage={nextImage} loading={isLoading} {...x}  remove={removeMovieAC} watchLater={addToWatchListAC}/>)
+    // return <Some> {list} </Some>
     return (
-        // <Suspense fallback={<Loader/>}>
-            <MovieItem {...movies} loading={isLoading} nextImage={nextImage} remove={removeMovieAC} watchLater={addToWatchListAC}/>
-        // {/* </Suspense> */}
+    //     // <Suspense fallback={<Loader/>}>
+        <Some>
+            <MovieItem {...movies[1]} loading={isLoading} nextImage={nextImage} remove={removeMovieAC} watchLater={addToWatchListAC}/>
+            <MovieItem {...movies[0]} loading={isLoading} nextImage={nextImage} remove={removeMovieAC} watchLater={addToWatchListAC}/>
+         </Some>
+        //     // {/* </Suspense> */}
         )  
 }
 const mapStateToProps = (store:any) => ({

@@ -7,7 +7,7 @@ interface IAction {
 }
 const GET_MOVIES = "GET_MOVIES"
 const REMOVE_MOVIE = "REMOVE_MOVIE"
-const SET_PAGE = "SET_PAGE"
+const GET_MOVIES_WITH_FILTERS = "GET_MOVIES_WITH_FILTERS"
 const LOADING = "LOADING"
 const NOT_FOUND = "NOT_FOUND"
 const GET_VIDEO = "GET_VIDEO"
@@ -19,9 +19,14 @@ export const movieReducer = (initialState:any) => (state=initialState,{type,payl
             return {
                 ...state,
                 page:payload.resultPage,
-                movies:[...payload.filteredList],
+                movies:[...state.movies,...payload.filteredList],
                 isLoading:false,
                 notFound:false
+            }
+        case GET_MOVIES_WITH_FILTERS: 
+            return {
+                ...state,
+                movies:[...payload.filteredList],
             }
         case GET_ACTORS :
             return {...state,
@@ -29,8 +34,7 @@ export const movieReducer = (initialState:any) => (state=initialState,{type,payl
                 directors:payload.Director}
         case LOADING:
             return {...state,isLoading:payload};
-        case SET_PAGE:
-            return {...state,page:1}
+
         case NOT_FOUND:
             return {...state,notFound:true}
         
@@ -49,7 +53,6 @@ export const movieReducer = (initialState:any) => (state=initialState,{type,payl
 
 
 
-export const setPageAC = () => ({type:SET_PAGE})
 const setNotFound = () => ({type:NOT_FOUND})
 
 const loadingAC = (loading:boolean) => ({type:LOADING,payload:loading});
@@ -111,6 +114,38 @@ export const getMovieThunk = (blocklist:[number],page?:any,filters?:any) => asyn
               return z.data
           })
         Promise.all(list).then(filteredList=>dispatch(getMoviesAC({resultPage,filteredList})))
+            
+    } catch (error) {
+        console.log(error)
+        dispatch(loadingAC(false))
+    }
+    
+
+}
+
+const getMoviesWithFiltersAC = (data:any) => ({type:GET_MOVIES_WITH_FILTERS,payload:data})
+
+export const getMoviesWithFiltersThunk = (blocklist:[number],page?:any,filters?:any) => async (dispatch:Dispatch)=>{
+    dispatch(loadingAC(true));
+    try {
+        const movies = await movieDiscover(page,filters);
+
+        if(movies.data.total_results === 0){
+            return dispatch(setNotFound())
+        }
+        if(page > movies.data.total_pages){
+            return dispatch(setNotFound())
+        }
+        const resultPage =  movies.data.page;
+        const list =  movies.data.results
+          .filter((x:any) => {
+              return !blocklist.includes(x.id)
+          })
+          .map(async (x:any) =>{
+              const z = await getMovieDetails(x.id); 
+              return z.data
+          })
+        Promise.all(list).then(filteredList=>dispatch(getMoviesWithFiltersAC({resultPage,filteredList})))
             
     } catch (error) {
         console.log(error)

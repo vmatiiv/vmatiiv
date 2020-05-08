@@ -5,7 +5,7 @@ import { getMovies, getDirectors } from '../../selectors'
 import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'
-
+import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
 interface MovieDescription{
     directors:any,
     movie:{    
@@ -23,13 +23,19 @@ const Wrap = styled.div`
   position:relative;
   overflow:auto;
   font-size: 1rem;
-  max-width: 375px;
+  max-width: 100%;
   height: 667px;
-  max-height: 95vh;
-  background-color:black;
-  color:white;
+  max-height: 95vh ;
+  padding:0 1rem;
+  background-color:${props => props.theme.colors.onyx};
+  color:${props => props.theme.colors.persianGreen};
   &::-webkit-scrollbar{
         display:none;
+  }
+  a{
+      position:relative;
+      left:50%;
+      transform:translateX(-50%);
   }
 `
 function MovieDescription({movie:{release_date,budget,revenue,runtime,genres,overview,vote_average},directors}:MovieDescription) {
@@ -41,9 +47,9 @@ function MovieDescription({movie:{release_date,budget,revenue,runtime,genres,ove
     return (
 
             <Wrap>
-
+                <Link to="/"><KeyboardArrowUpIcon/></Link>
+                
             <div > 
-                <Link to="/">Up</Link>
                 <div>Rate : {vote_average}</div>   
                 <div>Year: {release_date?.split('-')[0]}</div>
                 {budget !== 0 && 
@@ -64,7 +70,6 @@ function MovieDescription({movie:{release_date,budget,revenue,runtime,genres,ove
                 
                <ActorsContainer/>
                <Video/>
-                
             </Wrap>
        
     )
@@ -76,6 +81,6 @@ const mapStateToProps = (store:any) => ({
 
 const MovieDescriptionContainer = ({directors,movie}:any) => {
     if (!movie) return null
-    return <MovieDescription movie={movie} directors={directors}/>
+    return <MovieDescription movie={movie[0]} directors={directors}/>
 }
 export default connect(mapStateToProps)(MovieDescriptionContainer)

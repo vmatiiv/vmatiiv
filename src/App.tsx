@@ -8,14 +8,13 @@ import { connect } from 'react-redux';
 
 import styled, { css } from 'styled-components';
 import NavHOC from './HOC/NavHOC'
-import MovieDescription from './components/MovieCard/MovieDescription';
 import { CSSTransition } from 'react-transition-group';
 const Navigation = styled.div`
   display:flex;
   justify-content:space-around;
   align-items:center;
   height:5vh;
-  background-color:black;
+  background-color:${props => props.theme.colors.onyx};
 `
 const Wrapper = styled.div` 
   width:100vw;
@@ -100,93 +99,38 @@ const StyledApp = styled.div`
 const Main = styled.div`
   order:2;
   position:relative;
-  flex-grow:2;
-  grid-area: main;
   height:95vh;
   width:100%;
   display:flex;
-  justify-content:Center;
-  overflow:hidden;
+  flex-grow:2;
+  justify-content:center;
   align-items:center;
   @media (max-width:500px){
     z-index:1;
   }
-
-/* .description{
-  position:absolute;
-}
-.page-enter {
-  opacity: 0;
-  bottom:-95vw;
-}
-
-.page-enter-active {
-  opacity: 1;
-  bottom:0;
-  transition: all 300ms ;
-}
-
-.page-exit {
-  opacity: 1;
-  transform: scale(1);
-  bottom:0;
-
-}
-
-.page-exit-active {
-  opacity: 0;
-  bottom:-170vw;
-  transition: all 600ms;
-} */
 `
-
+const Aside = styled.aside`
+  order: 1;
+  width:100%;
+`
 function App({getGenresThunk}:any) {
 
   useEffect(()=>{
     getGenresThunk()
   });
 
-  // window.onpopstate = function( event:any ) {
-  //   event.preventDefault();
-  //   //console.log(window.history.length);
-  //   //console.log(window.history.length);
-
-  //   this.window.location.replace('http://localhost:3000/')
-  //   // window.location.replace('/');
-  // };
-  const routes = [
-    {path: "/", name: "Home", Component: MovieCardContainer},
-    {path:"/description",name:"Description",Component:MovieDescription}
-
-  ]
-
 
   return (
     <Wrapper onKeyDown={()=>{console.log('clicked')}}>
-
-        <Navigation> 
-          <NavHOC title={'watch later'} to={'/watch-later'}/>
-          <NavHOC title={'filters'} to={'/filters'}/>
-        </Navigation>
-
+        <Aside>
+          <Navigation> 
+            <NavHOC title={'watch later'} to={'/watch-later'}/>
+            <NavHOC title={'filters'} to={'/filters'}/>
+          </Navigation>
+        </Aside>
         <StyledApp className="something">
           <Main className="camon"> 
-          <Route path="/" component={MovieCardContainer}/> 
-              {/* <Route path="/description">
-              {({ match }) => (
-                <CSSTransition
-                  in={match != null}
-                  timeout={300}
-                  classNames="page"
-                  unmountOnExit
-                >
-                  <div className="description">
-                    <MovieDescription/>
-                  </div>
-                </CSSTransition>
-              )}
-              </Route> */}
-
+            <Route path="/" component={MovieCardContainer}/> 
           </Main>
 
               <Route path="/watch-later" >
@@ -208,25 +152,6 @@ function App({getGenresThunk}:any) {
                 </CSSTransition>
                 )}
               </Route>
-
-              
-            {/* <Route path="/filters" component = {FiltersContainer}/> */}
-            {/* {sideRoutes.map(({ path, Component }) => (
-              <Route path={path}>
-              {({ match }) => (
-                <CSSTransition
-                  in={match != null}
-                  timeout={300}
-                  classNames="page"
-                  unmountOnExit
-                >
-                  <div className="page">
-                    <Component/>
-                  </div>
-                </CSSTransition>
-              )}
-              </Route>
-          ))} */}
         </StyledApp>
  
     </Wrapper >
