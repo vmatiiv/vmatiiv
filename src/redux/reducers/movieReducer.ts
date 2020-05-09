@@ -27,6 +27,7 @@ export const movieReducer = (initialState:any) => (state=initialState,{type,payl
             return {
                 ...state,
                 movies:[...payload.filteredList],
+                notFound:false
             }
         case GET_ACTORS :
             return {...state,

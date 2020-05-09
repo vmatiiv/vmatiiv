@@ -3,40 +3,53 @@ import { Transition} from 'react-transition-group';
 import styled from 'styled-components';
 
 const Try = styled.div`
-      transition:all ${props =>  props.duration}ms ease-in-out;
-      /* opacity:0; */
-      transform:translateX(${props => props.transform}%);
-      height:95vh;
-      width:100%;
-      @media (max-width: 500px) {
-          background: #fff;
-          position:absolute;
-          top:0;
-          left:0;
-      }
+  /* position:relative; */
+  position:absolute;
+  top:0;
+  left:0;
+  opacity:0;
+  transition: all ${props => props.duration}ms ease-in;
+ @media (max-width: 780px) {
+     background: #fff;
+     position:absolute;
+     height:100%;
+     width:100vw;
+     top:0;
+     left:0;
+     z-index:1234;
+ }
 `
 
-function TransHOC({children,transform}) {
-    const duration = 3000;
-    const windowScale = window.innerWidth  > 500 ? '40vw' : '100vw';
+
+
+
+
+function TransHOC({children,visible,transform}) {
+    const duration = 300;
 
     const transitionStyles = {
         entering: { 
           opacity: 1,
-          width: windowScale, 
-          zIndex: 2,
-          transform: "translateX(0)"},
+          left:"-90vw"
+        },
         entered:  { 
           opacity: 1,
-           width: windowScale,
-           transform: "translateX(0)",
-          zIndex:2 },
-        exiting:  { opacity:1,zIndex:1},
-        exited:  { opacity: 1,zIndex:1},
+          left:0
+        },
+          // transition: "all 300ms "},
+        exiting:  { 
+          opacity: 0,
+          left:0
+          // transition: "all 600ms"
+        },
+        exited:  {  
+          opacity: 0,
+          left:"-90vw"
+        },
       };
 
     return (
-        <Transition  timeout={duration}>
+        <Transition in={visible} timeout={duration}>
         {(state) => (
             <Try transform={transform} duration={duration} 
             style={{...transitionStyles[state]}} 

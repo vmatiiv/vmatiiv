@@ -20,12 +20,13 @@ interface MovieDescription{
 }
 
 const Wrap = styled.div`
-  position:relative;
-  overflow:auto;
+  position:absolute;
+  left:0;
+  bottom:0;
+  overflow:scroll;
   font-size: 1rem;
   max-width: 100%;
-  height: 667px;
-  max-height: 95vh ;
+  height:100%;
   padding:0 1rem;
   background-color:${props => props.theme.colors.onyx};
   color:${props => props.theme.colors.persianGreen};
@@ -66,8 +67,7 @@ function MovieDescription({movie:{release_date,budget,revenue,runtime,genres,ove
 
                 <p>
                  {overview} 
-                </p>
-                
+                </p>                
                <ActorsContainer/>
                <Video/>
             </Wrap>

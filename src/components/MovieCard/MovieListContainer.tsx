@@ -9,9 +9,11 @@ import styled from 'styled-components'
 const Some = styled.div`
     position:relative;
     width:100%;
-    max-width: 375px;
-    max-height: 95vh;
-    height: 667px;
+    max-width: 360px;
+    max-height: 90%;
+    height:700px;
+    margin:0.3rem 0.5rem;
+    overflow:visible;
 `
 
 function MovieListContainer({getVideoThunk,nextImage,getActorsThunk,page,notFound,isLoading,blocklist,movies,filters,getMovieThunk,addToWatchListAC,removeMovieAC}:any) {

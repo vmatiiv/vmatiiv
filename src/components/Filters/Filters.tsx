@@ -24,7 +24,7 @@ const Wraper = styled.div`
     @media (max-width:500px){
       position:absolute;
       top:0;
-      right:0;
+      left:0;
       width:100vw;
   }
 `

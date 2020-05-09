@@ -6,7 +6,8 @@ const theme = {
     powderWhite: "#FFFDF9",
     persianGreen: "#06B49A",
     lightBlue: "#AFDBD2",
-    onyx: "#36313D"
+    onyx: "#36313D",
+    mainBackground: "#f5f7fa"
   },
   fonts: ["sans-serif", "Roboto"],
   fontSizes: {
@@ -16,7 +17,7 @@ const theme = {
   },
   media:{
       sm:"360px",
-      md:"760px",
+      md:"768px",
       lg:"1280px",
       xlg:"1920px"
   }

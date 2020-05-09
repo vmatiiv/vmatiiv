@@ -8,11 +8,9 @@ const Item = styled.div`
 `
 const Later = styled.div`
   order:1;
-  height:95vh;
+  height:100%;
   width:100%;
   overflow-y:auto;
-  grid-area: later;
-  z-index:2;
   background-color:white;
   @media (max-width:500px){
       position:absolute;
@@ -46,4 +44,4 @@ function WatchLater({movies,remove}:any) {
     )
 }
 
-export default WatchLater
+export default  WatchLater

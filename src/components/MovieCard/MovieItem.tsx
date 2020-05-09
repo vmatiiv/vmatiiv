@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react'
-import styled from 'styled-components'
+import styled, { css } from 'styled-components'
 import Img from '../common/Img';
 import { Redirect, Route } from 'react-router-dom';
 import InfoOutlinedIcon from '@material-ui/icons/InfoOutlined';
 import Loader from '../common/Loader';
-import {Swipeable,direction} from 'react-deck-swiper'
+// import {Swipeable,direction} from 'react-deck-swiper'
+ import {Swipeable,direction} from '../common/index'
+
 import { CSSTransition } from 'react-transition-group';
 import MovieDescription from './MovieDescription';
 interface IMovieItem {
@@ -19,24 +21,8 @@ interface IMovieItem {
     loading:boolean
 }
 
-const Wrapper = styled.div`
-  position:absolute;
-  left:0;
-  top:0;
-  overflow:hidden;
-  border-radius:20px;
-  font-size: 1rem;
-  max-width: 100%;
-  height: 667px;
-  max-height: 95vh;
-  box-shadow: 3px 2px 32px 4px rgba(0,0,0,0.48);
-  margin: 0 auto;
-  color:white;
-  .description{
-    position:absolute;
-    bottom:0;
-    left:0;
-}
+
+const DescriptionAnimation = css`
 .page-enter {
   opacity: 0;
   bottom:-100%;
@@ -50,7 +36,6 @@ const Wrapper = styled.div`
 
 .page-exit {
   opacity: 1;
-  transform: scale(1);
   bottom:0;
 
 }
@@ -60,17 +45,47 @@ const Wrapper = styled.div`
   bottom:100%;
   transition: all 600ms;
 }
-
-  @media (max-width:500px){
-    border-radius:0;
-  }
-
 `
+
+// const Wrapper = styled.div`
+//   position:absolute;
+//   left:0;
+//   top:0;
+//   overflow:hidden;
+//   border-radius:20px;
+//   font-size: 1rem;
+//   max-width: 360;
+//   height: 667px;
+//   max-height: 95vh;
+//   margin: 0 auto;
+//   box-shadow: 3px 2px 32px 4px rgba(0,0,0,0.2);
+
+//   color:white;
+//   .description{
+//     position:absolute;
+//     bottom:0;
+//     left:0;
+//   }
+//   ${DescriptionAnimation}
+// `
+const Wrapper = styled.div`
+  position:absolute;
+  top:0;
+  left:0;
+  border-radius:20px;
+  width:100%;
+  height:100%;
+  overflow:visible;
+`
+
 const Button = styled.button`
   position:relative;
   width:100%;
   height:100%;
-  
+  border-radius:20px;
+  overflow:hidden;
+  background-color:transparent;
+  box-shadow: 3px 2px 32px 4px rgba(0,0,0,0.2);
   margin:0;
   padding:0;
   outline:none;
@@ -82,14 +97,16 @@ const Button = styled.button`
     background-color:pink;
     transform:scale(2);
   }
-`
 
-const NextImage = styled.div`
-  position:absolute;
-  height:100%;
-  top:0;
-  left:0;
-  z-index:-1;
+  .sw{
+    overflow:visible;
+  }
+  ${DescriptionAnimation}
+   /* .description{
+     position:absolute;
+     bottom:0;
+     left:0;
+   } */
 `
 const MovieItem = ({id,title,remove,overview,watchLater,nextImage,backdrop_path,poster_path,loading}:IMovieItem) => {
   const [dragDissable,setDragDissable] = useState(false)
@@ -121,22 +138,17 @@ const MovieItem = ({id,title,remove,overview,watchLater,nextImage,backdrop_path,
     return (
 
       <Wrapper  >
-        {dragDissable && <Redirect to="/description"/>}
-        {/* {loading && <Loader/>} */}
-      <Swipeable  onSwipe={handleOnSwipe} >
-          <Button >
-            <Img src={poster_path} alt={title}  maxWidth={"375px"}/>
-            {/* <button onClick={onClick} style={{position:"absolute",margin:0,padding:0,border:0,left:"50%",top:"1rem"}}>  </button> */}
-            {/* <img className="info" src={info} alt="info"/> */}
-            <InfoOutlinedIcon className="info" onClick={onClick}/>
-          </Button> 
-        
-      </Swipeable>
-{/* 
-        <NextImage>
-          <Img src={nextImage} alt={title} maxWidth={"375px"}/>
-        </NextImage> */}
-        <Route path="/description">
+         {dragDissable && <Redirect to="/description"/>}
+         {/* {loading && <Loader/>} */}
+        < >
+          <Swipeable  onSwipe={handleOnSwipe} >
+              <Button>
+                  <Img src={poster_path} alt={title} maxWidth={"360px"}/>
+                  <InfoOutlinedIcon className="info" onClick={onClick}/>
+              </Button>         
+          </Swipeable>
+
+      <Route path="/description">
               {({ match }) => (
                 <CSSTransition
                   in={match != null}
@@ -144,14 +156,14 @@ const MovieItem = ({id,title,remove,overview,watchLater,nextImage,backdrop_path,
                   classNames="page"
                   unmountOnExit
                 >
-                  <div className="description">
                     <MovieDescription/>
-                  </div>
-                </CSSTransition>
-              )}
-              </Route>
 
-      </Wrapper>
+                 </CSSTransition>
+              )}
+              </Route> 
+        </> 
+
+       </Wrapper>
 
 
 

@@ -12,6 +12,7 @@ const Image = styled.img<{isLoading:boolean,maxWidth?:string}>`
     pointer-events:none;
     filter: ${props => props.loading ? 'blur(10px)' : 'none'};
     overflow:hidden;
+    /* border-radius:10px; */
 `
 
 interface IImg {
