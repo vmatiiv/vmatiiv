@@ -49,6 +49,7 @@ const Aside = styled.aside<{clear:boolean}>`
 const AsideContant = styled.div`
   position:relative;
   height:100%;
+  width:100%;
   overflow:auto;
   z-index:123;
 `

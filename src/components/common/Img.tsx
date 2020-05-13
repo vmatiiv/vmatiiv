@@ -8,7 +8,7 @@ const Image = styled.img<{isLoading:boolean,maxWidth?:string}>`
     width:100%;
     height:100%;
     object-position: center;
-    min-width: ${props => props.maxWidth || null};
+    max-width: ${props => props.maxWidth || null};
     pointer-events:none;
     filter: ${props => props.loading ? 'blur(10px)' : 'none'};
     overflow:hidden;

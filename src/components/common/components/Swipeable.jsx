@@ -12,8 +12,8 @@ import { getOpacity } from '../utils/helpers';
 const Swipeable = ({
   wrapperHeight = '100%',
   wrapperWidth = '100%',
-  swipeThreshold = 120,
-  fadeThreshold = 40,
+  swipeThreshold = 200,
+  fadeThreshold = 100,
   handleOnDragStart,
   handleForceSwipe,
   onOpacityChange,
@@ -21,24 +21,24 @@ const Swipeable = ({
   children,
   state,
 }) => {
-  console.log(state);
   const springProps = useSpring({
     immediate: state.pristine || (!state.forced && Math.abs(state.offset) >= swipeThreshold),
     config: {
-      tension: 390,
-      friction: 30,
-      restSpeedThreshold: 1,
-      restDisplacementThreshold: 0.01,
-      overshootClamping: true,
-      lastVelocity: 1,
+      tension: 170,
+      friction: 26,
+      // restSpeedThreshold: 1,
+      // restDisplacementThreshold: 0.01,
+      // overshootClamping: true,
+      // lastVelocity: 1,
       mass: 0.1,
     },
     from: {
-      opacity: 1,
       offset: 0,
+      // opacity:1
     },
     to: {
-      opacity: getOpacity(state.offset, swipeThreshold, fadeThreshold),
+      // opacity: getOpacity(state.offset, swipeThreshold, fadeThreshold),
+      // opacity:1,
       offset: state.offset,
     },
   });
@@ -48,7 +48,7 @@ const Swipeable = ({
   // so we can't access properties from useSpring.
 
   // eslint-disable-next-line
-  const opacity = springProps['opacity'].value;
+  // const opacity = springProps['opacity'].value;
 
   // eslint-disable-next-line
   const offset = springProps['offset'].value;
@@ -60,17 +60,19 @@ const Swipeable = ({
     height: wrapperHeight,
     width: wrapperWidth,
     overflow:'visible',
-    opacity
+    // opacity,
+    
+
   };
 
-  React.useEffect(() => {
-    if (onOpacityChange) {
-      onOpacityChange(opacity);
-    }
-  }, [
-    onOpacityChange,
-    opacity,
-  ]);
+  // React.useEffect(() => {
+  //   if (onOpacityChange) {
+  //     onOpacityChange(opacity);
+  //   }
+  // }, [
+  //   onOpacityChange,
+  //   opacity,
+  // ]);
 
   return (
     <>
@@ -81,15 +83,6 @@ const Swipeable = ({
       >
         {children}
       </animated.div>
-
-      {
-        renderButtons && (
-          renderButtons({
-            right: () => handleForceSwipe(directionEnum.RIGHT),
-            left: () => handleForceSwipe(directionEnum.LEFT),
-          })
-        )
-      }
     </>
   );
 };

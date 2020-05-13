@@ -8,6 +8,7 @@ const Try = styled.div`
   top:0;
   left:0;
   opacity:0;
+  width:100%;
   transition: all ${props => props.duration}ms ease-in;
  @media (max-width: 780px) {
      background: #fff;

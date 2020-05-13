@@ -19,7 +19,7 @@ const Some = styled.div`
 function MovieListContainer({getVideoThunk,nextImage,getActorsThunk,page,notFound,isLoading,blocklist,movies,filters,getMovieThunk,addToWatchListAC,removeMovieAC}:any) {
     
     useEffect(()=>{
-        if( movies.length<3 && navigator.onLine ){
+        if( movies.length<2 && navigator.onLine ){
             getMovieThunk(blocklist,page+1,filters)
         }
         else {
@@ -68,15 +68,14 @@ function MovieListContainer({getVideoThunk,nextImage,getActorsThunk,page,notFoun
 
 
 // dragDissable={dragDissable} setDragDissable={setDragDissable}
-    // const list = movies.map((x:any) => <MovieItem key={x.id} nextImage={nextImage} loading={isLoading} {...x}  remove={removeMovieAC} watchLater={addToWatchListAC}/>)
+    const list = movies.map((x:any) => <MovieItem key={x.id} nextImage={nextImage} loading={isLoading} {...x}  remove={removeMovieAC} watchLater={addToWatchListAC}/>)
     // return <Some> {list} </Some>
     return (
-    //     // <Suspense fallback={<Loader/>}>
         <Some>
+    {/* {list} */}
             <MovieItem {...movies[1]} loading={isLoading} nextImage={nextImage} remove={removeMovieAC} watchLater={addToWatchListAC}/>
             <MovieItem {...movies[0]} loading={isLoading} nextImage={nextImage} remove={removeMovieAC} watchLater={addToWatchListAC}/>
          </Some>
-        //     // {/* </Suspense> */}
         )  
 }
 const mapStateToProps = (store:any) => ({
