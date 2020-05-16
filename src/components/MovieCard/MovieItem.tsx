@@ -1,13 +1,10 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import styled, { css } from 'styled-components'
 import Img from '../common/Img';
-import { Redirect, Route } from 'react-router-dom';
 import InfoOutlinedIcon from '@material-ui/icons/InfoOutlined';
 
-// import {Swipeable,direction} from 'react-deck-swiper'
  import {Swipeable,direction} from '../common/index'
 
-import { CSSTransition } from 'react-transition-group';
 import MovieDescription from './MovieDescription';
 interface IMovieItem {
     id:number,
@@ -64,7 +61,7 @@ const Button = styled.button`
   width:100%;
   height:100%;
   border-radius:20px;
-  overflow:hidden;
+  overflow:hidden auto;
   /* background-color:transparent; */
   /* box-shadow: 3px 2px 32px 4px rgba(0,0,0,0.2); */
   /* margin:0; */
@@ -96,18 +93,22 @@ const About = styled.div`
    align-items:center;
 `
 const MovieItem = ({id,title,remove,overview,watchLater,nextImage,backdrop_path,poster_path,loading,original_title}:IMovieItem) => {
-  const [dragDissable,setDragDissable] = useState(false)
-    
+  const [dragDissable,setDragDissable] = useState(false);
+  const scroll = useRef(document.createElement("button"));
+  // scroll.current.scrollTo(0,0);
     useEffect(()=>{ 
       setDragDissable(false)
     })
+
     const addToLater = () => {
       watchLater({id,title,overview,poster_path})
       remove(id)
     }
 
-    const onClick = () => { 
+    const onClick = () => {
+       scroll.current.scrollTo(0,scroll.current.clientHeight);
        setDragDissable(true) 
+
 
     }
 
@@ -125,32 +126,17 @@ const MovieItem = ({id,title,remove,overview,watchLater,nextImage,backdrop_path,
     return (
 
       <Wrapper  >
-         {dragDissable && <Redirect to="/description"/>}
-        < >
-          <Swipeable  onSwipe={handleOnSwipe} >
-              <Button>
+         <Swipeable   onSwipe={handleOnSwipe} >
+              <Button ref={scroll}>
                   <Img src={poster_path} alt={title} />
                   <About>
                     <h1>{original_title}</h1>
                     <InfoOutlinedIcon className="info" onClick={onClick}/>
                   </About>
+                  <MovieDescription/>
               </Button>
           </Swipeable>
 
-      {/* <Route path="/description">
-              {({ match }) => (
-                <CSSTransition
-                  in={match != null}
-                  timeout={300}
-                  classNames="page"
-                  unmountOnExit
-                >
-                    <MovieDescription/>
-
-                 </CSSTransition>
-              )}
-              </Route>  */}
-        </> 
 
        </Wrapper>
 

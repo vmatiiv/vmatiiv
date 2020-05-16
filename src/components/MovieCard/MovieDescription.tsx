@@ -20,13 +20,12 @@ interface MovieDescription{
 }
 
 const Wrap = styled.div`
-  position:absolute;
+  position:relative;
   left:0;
   bottom:0;
-  overflow:scroll;
+  /* overflow:hidden; */
   font-size: 1rem;
   max-width: 100%;
-  height:100%;
   padding:0 1rem;
   background-color:${props => props.theme.colors.onyx};
   color:${props => props.theme.colors.persianGreen};
@@ -40,7 +39,6 @@ const Wrap = styled.div`
   }
 `
 function MovieDescription({movie:{release_date,budget,revenue,runtime,genres,overview,vote_average},directors}:MovieDescription) {
-    
     const directorList = directors ?  directors.map((x:any) => x.name).join(',') : null
     const genresList = genres ?  genres.map((x:any) => x.name).join(',') : null
 
@@ -52,7 +50,7 @@ function MovieDescription({movie:{release_date,budget,revenue,runtime,genres,ove
                 
             <div > 
                 <div>Rate : {vote_average}</div>   
-                <div>Year: {release_date?.split('-')[0]}</div>
+                {release_date && <div>Year: {release_date?.split('-')[0]}</div>}
                 {budget !== 0 && 
                  <>
                   <div>Budget: {`${budget}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")}$</div>
@@ -80,7 +78,8 @@ const mapStateToProps = (store:any) => ({
 })
 
 const MovieDescriptionContainer = ({directors,movie}:any) => {
-    if (!movie) return null
+    
+    if (!movie.length) return null
     return <MovieDescription movie={movie[0]} directors={directors}/>
 }
 export default connect(mapStateToProps)(MovieDescriptionContainer)
