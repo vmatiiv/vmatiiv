@@ -1,7 +1,7 @@
 import React from 'react'
 import { Transition} from 'react-transition-group';
 import styled from 'styled-components';
-
+import {useSpring,animated} from 'react-spring'
 const Try = styled.div`
   /* position:relative; */
   position:absolute;
@@ -48,17 +48,30 @@ function TransHOC({children,visible,transform}) {
           left:"-90vw"
         },
       };
-
+      const prop = useSpring({
+        from:{
+          left:0
+        },
+        to:{
+          left:"50%"
+        },
+        config:{
+          duration:3000
+        }
+      })
     return (
-        <Transition in={visible} timeout={duration}>
-        {(state) => (
-            <Try transform={transform} duration={duration} 
-            style={{...transitionStyles[state]}} 
->
-                {children}
-            </Try>
-        )}
-   </Transition>
+//         <Transition in={visible} timeout={duration}>
+//         {(state) => (
+//             <Try transform={transform} duration={duration} 
+//             style={{...transitionStyles[state]}} 
+// >
+//                 {children}
+//             </Try>
+//         )}
+//    </Transition>
+      <animated.div style={{...prop}}>
+        {children}
+      </animated.div>
     )
 }
 export default TransHOC

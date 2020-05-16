@@ -20,7 +20,7 @@ const Wrapper = styled.div`
         }
     }
 `
-function Actors({cast,index,left,right}:any) {
+const Actors = React.memo(({cast,index,handleRight,handleLeft}:any) => {
 
     const config = {
         trackTouch: true,                      // track touch input
@@ -29,10 +29,11 @@ function Actors({cast,index,left,right}:any) {
         rotationAngle: 0,
         preventDefaultTouchmoveEvent: true,
       }
-    
+
+
     return  (
         <Wrapper>
-            <Swipeable onSwipedRight={(e)=>right(e)} onSwipedLeft={()=>left()} {...config}>
+            <Swipeable onSwipedRight={handleRight} onSwipedLeft={handleLeft} {...config}>
                 <Img src={cast[index].profile_path} alt={cast[index].name}/>
 
                 <div className='character'>
@@ -43,7 +44,7 @@ function Actors({cast,index,left,right}:any) {
             </Swipeable>
         </Wrapper>
     )
-}
+})
 const mapStateToProps = (store:any) => ({
     cast:getActors(store),
 })
@@ -55,14 +56,13 @@ function ActorsContainer({cast}:any) {
         setIndex(0)
     },[cast])
 
-    const left = () => {
+    const handleLeft = (e:any) => {
       setIndex((index+1) % cast.length)
     }
 
-    const right = (e:any) => {
-        console.log(e)
+    const handleRight = (e:any) => {
         index === 0 ? setIndex(cast.length -1) : setIndex((index-1) % cast.length)
     }
-    return cast ? <Actors cast={cast} index={index} left={left} right={right}/> : null
+    return cast ? <Actors cast={cast} index={index} handleLeft={handleLeft} handleRight={handleRight}/> : null
 }
 export default connect(mapStateToProps)(ActorsContainer)

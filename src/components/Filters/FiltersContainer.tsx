@@ -7,9 +7,9 @@ import Filters from './Filters'
 
 
 
-function FiltersContainer({blocklist,filters,setFiltersAC,genres,getMoviesWithFiltersThunk}:any) {
+function FiltersContainer({blocklist,setClear,filters,setFiltersAC,genres,getMoviesWithFiltersThunk}:any) {
     return (  <>
-        { !!genres ? <Filters blocklist={blocklist} filters={filters}  getMovieThunk={getMoviesWithFiltersThunk} setFilters={setFiltersAC}  genres={genres}/> : <h1>loading</h1>}
+        { !!genres ? <Filters setClear={setClear} blocklist={blocklist} filters={filters}  getMovieThunk={getMoviesWithFiltersThunk} setFilters={setFiltersAC}  genres={genres}/> : <h1>loading</h1>}
         </>
     )
 }

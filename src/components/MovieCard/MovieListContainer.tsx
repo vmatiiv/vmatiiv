@@ -16,65 +16,37 @@ const Some = styled.div`
     overflow:visible;
 `
 
-function MovieListContainer({getVideoThunk,nextImage,getActorsThunk,page,notFound,isLoading,blocklist,movies,filters,getMovieThunk,addToWatchListAC,removeMovieAC}:any) {
+function MovieListContainer({getVideoThunk,getActorsThunk,page,notFound,isLoading,blocklist,movies,filters,getMovieThunk,addToWatchListAC,removeMovieAC}:any) {
     
     useEffect(()=>{
-        if( movies.length<2 && navigator.onLine ){
+        if( movies.length<3 && navigator.onLine ){
             getMovieThunk(blocklist,page+1,filters)
-        }
-        else {
-            getActorsThunk(movies[0].id);
-            getVideoThunk(movies[0].id);
         }
     },[movies])
 
-    useEffect(()=>{
-        const handleKeys = (e:any) => {
-            switch (e.key){
-                case 'ArrowRight':
-                    try{
-                    addToWatchListAC({
-                        id:movies.id,
-                        title:movies.title,
-                        overview:movies.overview,
-                        poster_path:movies.poster_path})
-                    removeMovieAC(movies.id)
-                }catch{} break
-                case 'ArrowLeft':
-                    try{
-                        removeMovieAC(movies.id)
-                    }catch{} break 
-                // case 'ArrowUp':{
-                //     window.history.pushState('/description')
-                //     break
-                // }
-                // case 'ArrowDown':{
-                //     window.location.assign('/')
-                //     break
-                // }
-            }
-                
-                
-          }
-        document.addEventListener('keydown',handleKeys)
-        return () => document.removeEventListener('keydown',handleKeys)
-      })
+
 
     if(!navigator.onLine) return <h1>no internet connection</h1> 
     if(notFound) return <h1>I can`t find movie by your filters, try to change it</h1>
+    if(!movies.length) return null
     // if(isLoading) return <Loader/>
 
 
 
-
+    const nextMovie = {
+        image: movies[1].poster_path,
+        title: movies[1].title,
+    }
 // dragDissable={dragDissable} setDragDissable={setDragDissable}
-    const list = movies.map((x:any) => <MovieItem key={x.id} nextImage={nextImage} loading={isLoading} {...x}  remove={removeMovieAC} watchLater={addToWatchListAC}/>)
+    const list = movies.map((x:any) => <MovieItem key={x.id}  loading={isLoading} {...x}  remove={removeMovieAC} watchLater={addToWatchListAC}/>)
     // return <Some> {list} </Some>
     return (
         <Some>
     {/* {list} */}
-            <MovieItem {...movies[1]} loading={isLoading} nextImage={nextImage} remove={removeMovieAC} watchLater={addToWatchListAC}/>
-            <MovieItem {...movies[0]} loading={isLoading} nextImage={nextImage} remove={removeMovieAC} watchLater={addToWatchListAC}/>
+ 
+
+            {/* <MovieItem {...movies[1]} loading={isLoading} nextImage={nextImage} remove={removeMovieAC} watchLater={addToWatchListAC}/> */}
+            <MovieItem {...movies[0]} nextMovie={nextMovie} loading={isLoading} remove={removeMovieAC} watchLater={addToWatchListAC}/>
          </Some>
         )  
 }
@@ -85,7 +57,6 @@ const mapStateToProps = (store:any) => ({
     blocklist:getBlockList(store),
     isLoading:isLoading(store),
     notFound:notFound(store),
-    nextImage:getNextImage(store)
 
 
 })
@@ -97,4 +68,4 @@ const mapDispatchToProps = {
     getVideoThunk,
 }
 
-export default React.memo(connect(mapStateToProps,mapDispatchToProps)(MovieListContainer))
+export default connect(mapStateToProps,mapDispatchToProps)(MovieListContainer)

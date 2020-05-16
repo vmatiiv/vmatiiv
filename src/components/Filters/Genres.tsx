@@ -42,4 +42,4 @@ function Genres({genres,filters,setFilters}:any) {
     )
 }
 
-export default Genres
+export default React.memo(Genres)

@@ -1,7 +1,7 @@
 import React from 'react'
 import Typography from '@material-ui/core/Typography';
 import Slider from '@material-ui/core/Slider';
-
+import {makeStyles} from '@material-ui/styles'
 interface ISliderHOC {
     title: string,
     initialValue: any,
@@ -10,6 +10,13 @@ interface ISliderHOC {
     max:number,
     slideProp:string
 }
+const useStyles = makeStyles({
+  root:{
+    width:"90%",
+    marginTop:"2rem"
+
+  }
+})
 
 function SliderHOC({title,initialValue,setFilters,min,max,slideProp}:ISliderHOC) {
     const [value, setValue] = React.useState(initialValue);
@@ -19,17 +26,18 @@ function SliderHOC({title,initialValue,setFilters,min,max,slideProp}:ISliderHOC)
     };
   
     const changeState = () => {
-        
         setFilters({[slideProp]:value})
     }
+    const classes = useStyles();
 
     return (
-        <div>
+        <div style={{textAlign:"center"}}>
             <Typography id="range-slider" gutterBottom>
               {title}
             </Typography>
 
             <Slider
+              className={classes.root}
               value={value}
               min={min}
               max={max}

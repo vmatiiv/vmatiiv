@@ -1,22 +1,22 @@
-import React, {   useEffect, useState, useCallback } from 'react';
-import WatchLater from './components/WatchLater'
-import FiltersContainer from './components/Filters'
+import React, {   useEffect, useState} from 'react';
+import WatchLater from './components/WatchLater/WatchLaterContainer'
+import FiltersContainer from './components/Filters/FiltersContainer'
 import MovieCardContainer from './components/MovieCard/MovieListContainer'
-import {Route} from 'react-router-dom'
 import { getGenresThunk} from './redux/reducers/filterReducer'
 import { connect } from 'react-redux';
-
-import styled, { css } from 'styled-components';
-import TransHOC from './HOC/TransHOC'
-
-import { CSSTransition, SwitchTransition } from 'react-transition-group';
-const Navigation = styled.div`
+import {useSpring} from 'react-spring'
+import styled from 'styled-components';
+import {AsideContant,MobileView} from './animations'
+import { Navigation } from './styles';
+import ListIcon from '@material-ui/icons/List';
+import MovieFilterIcon from '@material-ui/icons/MovieFilter';
+const Navigationn = styled.div`
   display:flex;
   padding:0.5rem;
   justify-content:space-around;
   align-items:center;
-  background:linear-gradient(90deg, rgba(255,68,0,1) 0%, rgba(255,214,0,1) 100%);
-
+  height:5%;
+  background:linear-gradient(262deg, #ff7854, #fd267d);
 `
 
 const Wrapper = styled.div` 
@@ -25,96 +25,105 @@ const Wrapper = styled.div`
   height:100vh;
   min-width:100%;
   grid-template-columns:1fr;
-  grid-template-rows:auto 1fr;
   @media (min-width:${props => props.theme.media.md}){
-    grid-template-columns:1fr 2fr;
-    grid-template-rows:none;
-
+    grid-template-columns:1fr 2.5fr;
+    grid-template-rows:auto 1fr;
   }
 
 `
-const Aside = styled.aside<{clear:boolean}>`
+const Aside = styled.aside`
   position:relative;
-  height:${props => props.clear ? "auto" : "100vh"};
   @media (min-width:${props => props.theme.media.md}){
       border-right: 1px solid black;
-      height:auto;
-      .main{
-     display:none
-   }
+      height:100vh;
+      display:block
   }
 
 
 `
-const AsideContant = styled.div`
-  position:relative;
-  height:100%;
-  width:100%;
-  overflow:auto;
-  z-index:123;
-`
+
+
 const Main = styled.div`
   position:relative;
-  height:100%;
-  width:100%;
+  height:95vh;
+  /* grid-area: main; */
+  order:2;
   display:flex;
+  flex-direction:column;
+  padding:0 0.5rem;
+  width:100vw;
   background-color: ${props => props.theme.colors.mainBackground};
   justify-content:center;
   align-items:center;
+  @media (min-width:${props => props.theme.media.md}){
+    width:100%;
+   }
 `
 
 
 function App({getGenresThunk}:any) {
-  const [clear,setClear] = useState(true);
-  const [watchLaterPage,setWatchLaterPage] = useState(true)
+  const [clear,setClear] = useState("-100vw");
+  const [active,setActive] = useState(true)
   const [filters,setFilters] = useState(false)
-  console.log(watchLaterPage);
+  const [size,setSize] = useState(window.innerWidth);
+
   useEffect(()=>{
-    console.log('effect')
     getGenresThunk()
   },[]);
 
-
+  useEffect(()=>{
+    const resize = ()=>{
+      setSize(window.innerWidth)
+    }
+    window.addEventListener('resize',()=>resize())
+    return window.removeEventListener('resize',()=>resize())
+  },[size])
 
   const handleFiltersShow = () =>{
-    setFilters(true)
-    setClear(false);
-    setWatchLaterPage(false);
+    setActive(false)
   }
 
   const handleWatchLaterShow = () => {
-    setWatchLaterPage(true);
-    setFilters(false)
-    setClear(false);
-
-
+    setActive(true)
   }
-
+  const transfer = useSpring({
+    transform: `translateX(${clear})`,
+  })
+  const listTranslate = useSpring({
+    transform: `translateX(${active ? '0%' : '-50%'})`,
+  })
   return (
     <Wrapper>
-
-          <Aside clear={clear}>
-            <Navigation> 
-              <h1 onClick={handleWatchLaterShow}>watch Later</h1>
-              <h1 className="main" onClick={()=>setClear(true)}> main </h1>
-              <h1 onClick={handleFiltersShow}>filters</h1>
-            </Navigation>
-
-             <AsideContant>
-              <TransHOC visible={watchLaterPage} transform={100}>
+          {size >= 768 && 
+          <>
+            <Aside>
+              <Navigationn> 
+                <h1 onClick={handleWatchLaterShow}>watch Later</h1>
+                <h1 onClick={handleFiltersShow}>filters</h1>
+              </Navigationn>
+              <AsideContant style={listTranslate}>
                 <WatchLater/>
-              </TransHOC>
-
-              <TransHOC visible={filters} transform={-100}>
                 <FiltersContainer/>
-              </TransHOC>
-            </AsideContant>
-          </Aside>
-          
-          <Main className="camon"> 
-            <Route path="/" component={MovieCardContainer}/> 
-          </Main>
-           
+              </AsideContant>
+            </Aside> 
+            <Main> 
+                <MovieCardContainer/> 
+            </Main>
+          </>}
+
+          {size < 768 &&
+          <MobileView style={transfer} onClick={handleFiltersShow}>
+                <WatchLater setClear={setClear}/>
+            <Main> 
+              <Navigation center>
+                <ListIcon onClick={()=>setClear("0vw")}/>
+                <MovieFilterIcon onClick={()=> setClear("-200vw")}/>
+              </Navigation>
+              <MovieCardContainer /> 
+            </Main>
+              <FiltersContainer setClear={setClear}/>
+
+          </MobileView>}
     </Wrapper >
   );
 }

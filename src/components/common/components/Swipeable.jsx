@@ -3,9 +3,7 @@ import { useSpring, animated } from 'react-spring';
 
 // eslint-disable-next-line no-unused-vars
 import { SwipeableWrapperProps, SwipeableState } from './SwipeableWrapper';
-
-import directionEnum from '../constants/direction';
-import { getOpacity } from '../utils/helpers';
+import {getAnimation} from '../utils/helpers'
 
 
 
@@ -17,20 +15,22 @@ const Swipeable = ({
   handleOnDragStart,
   handleForceSwipe,
   onOpacityChange,
+  onAfterSwipe,
   renderButtons,
   children,
   state,
 }) => {
+  console.log(state.after)
   const springProps = useSpring({
     immediate: state.pristine || (!state.forced && Math.abs(state.offset) >= swipeThreshold),
     config: {
       tension: 170,
-      friction: 26,
-      // restSpeedThreshold: 1,
-      // restDisplacementThreshold: 0.01,
-      // overshootClamping: true,
-      // lastVelocity: 1,
-      mass: 0.1,
+      friction: 100,
+      restSpeedThreshold: 1,
+      restDisplacementThreshold: 0.01,
+      overshootClamping: true,
+      lastVelocity: 1,
+      mass: 2,
     },
     from: {
       offset: 0,
@@ -39,7 +39,7 @@ const Swipeable = ({
     to: {
       // opacity: getOpacity(state.offset, swipeThreshold, fadeThreshold),
       // opacity:1,
-      offset: state.offset,
+      offset:state.offset
     },
   });
   // opacity: getOpacity(state.offset, swipeThreshold, fadeThreshold),
@@ -51,7 +51,7 @@ const Swipeable = ({
   // const opacity = springProps['opacity'].value;
 
   // eslint-disable-next-line
-  const offset = springProps['offset'].value;
+  const offset = !state.after ? springProps['offset'].value : springProps['offset'].value * 5;
 
   const animatedStyle = {
     ...springProps,
@@ -60,7 +60,6 @@ const Swipeable = ({
     height: wrapperHeight,
     width: wrapperWidth,
     overflow:'visible',
-    // opacity,
     
 
   };
@@ -75,7 +74,6 @@ const Swipeable = ({
   // ]);
 
   return (
-    <>
       <animated.div
         onTouchStart={handleOnDragStart}
         onMouseDown={handleOnDragStart}
@@ -83,7 +81,6 @@ const Swipeable = ({
       >
         {children}
       </animated.div>
-    </>
   );
 };
 

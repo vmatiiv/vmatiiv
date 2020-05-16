@@ -19,12 +19,12 @@ const INITIAL_STATE = {
   swiped: false,
   moving: false,
   pristine: true,
+  after:false
 };
 
 
 const SwipeableWrapper = (props) => {
   const [state, setState] = React.useState(INITIAL_STATE);
-
   const stateRef = React.useRef(state);
 
   stateRef.current = state;
@@ -32,7 +32,6 @@ const SwipeableWrapper = (props) => {
   const {
     swipeThreshold = 120,
     onBeforeSwipe,
-    onAfterSwipe,
     onSwipe,
   } = props;
 
@@ -43,19 +42,10 @@ const SwipeableWrapper = (props) => {
       ...stateRef.current,
       offset: 0,
       start: 0,
+      after:false
     });
   }, []);
 
-  const handleOnAfterSwipe = React.useCallback(() => {
-    if (onAfterSwipe) {
-      onAfterSwipe();
-    }
-
-    handleResetState();
-  }, [
-    handleResetState,
-    onAfterSwipe,
-  ]);
 
   const handleOnSwipe = React.useCallback((direction) => {
     if (onSwipe) {
@@ -67,11 +57,10 @@ const SwipeableWrapper = (props) => {
       offset: getLimitOffset(swipeThreshold, direction),
       moving: false,
       swiped: true,
+      after:true
     });
 
-    handleOnAfterSwipe();
   }, [
-    handleOnAfterSwipe,
     swipeThreshold,
     onSwipe,
   ]);
@@ -112,6 +101,7 @@ const SwipeableWrapper = (props) => {
     }
 
     if (Math.abs(stateRef.current.offset) >= swipeThreshold) {
+
       handleOnBeforeSwipe(getDirection(stateRef.current.offset));
       return;
     }

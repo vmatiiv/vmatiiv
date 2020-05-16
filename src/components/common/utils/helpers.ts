@@ -18,6 +18,10 @@ export const getLimitOffset = (limit: number, direction: string) => (
     : -limit
 );
 
+export const getAnimation = (after:boolean,offset:number)=>{
+  if (after) return 1000
+  return offset
+}
 export const getOpacity = (offset: number, limit: number, min: number) => (
   1 - (
     Math.abs(offset) < min

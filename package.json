@@ -5,6 +5,7 @@
   "dependencies": {
     "@material-ui/core": "^4.9.12",
     "@material-ui/icons": "^4.9.1",
+    "@material-ui/styles": "^4.9.14",
     "@sandstreamdev/react-swipeable-list": "^0.5.0",
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.5.0",
@@ -13,6 +14,7 @@
     "@types/node": "^12.12.37",
     "@types/react": "^16.9.34",
     "@types/react-dom": "^16.9.7",
+    "@welldone-software/why-did-you-render": "^4.2.1",
     "axios": "^0.19.2",
     "react": "^16.13.1",
     "react-deck-swiper": "^1.0.9",
