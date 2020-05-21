@@ -33,6 +33,28 @@ const Wrapper = styled.div`
   overflow:visible;
 `
 
+<<<<<<< HEAD
+=======
+const Button = styled.button`
+  position:relative;
+  width:100%;
+  height:100%;
+  border-radius:20px;
+  overflow:hidden auto;
+  /* background-color:transparent; */
+  /* box-shadow: 3px 2px 32px 4px rgba(0,0,0,0.2); */
+  /* margin:0; */
+  padding:0;
+  outline:none;
+  border:none;
+  img{
+    min-width:360px;
+  }
+
+  ${DescriptionAnimation}
+
+`
+>>>>>>> a9cc5e1ba9c1f2c12649b699dc43c939b768a611
 const About = styled.div`
    background-color:rgba(0,0,0,0.6);
    width:100%;
@@ -50,6 +72,7 @@ const About = styled.div`
    padding-left:1rem;
    align-items:center;
 `
+<<<<<<< HEAD
 const Front = styled.div`
   position: absolute;
   top:0;
@@ -95,6 +118,15 @@ const BackImage = styled.button`
 `
 const MovieItem = ({id,title,remove,overview,watchLater,nextMovie,poster_path,loading,original_title}:IMovieItem) => {
   const [flip,setFlip] = useState(false);
+=======
+const MovieItem = ({id,title,remove,overview,watchLater,nextImage,backdrop_path,poster_path,loading,original_title}:IMovieItem) => {
+  const [dragDissable,setDragDissable] = useState(false);
+  const scroll = useRef(document.createElement("button"));
+  // scroll.current.scrollTo(0,0);
+    useEffect(()=>{ 
+      setDragDissable(false)
+    })
+>>>>>>> a9cc5e1ba9c1f2c12649b699dc43c939b768a611
 
     const addToLater = () => {
       watchLater({id,title,overview,poster_path})
@@ -102,7 +134,14 @@ const MovieItem = ({id,title,remove,overview,watchLater,nextMovie,poster_path,lo
     }
 
     const onClick = () => {
+<<<<<<< HEAD
       setFlip(!flip) 
+=======
+       scroll.current.scrollTo(0,scroll.current.clientHeight);
+       setDragDissable(true) 
+
+
+>>>>>>> a9cc5e1ba9c1f2c12649b699dc43c939b768a611
     }
 
     const handleOnSwipe = (swipeDirection:any) => {
@@ -127,6 +166,7 @@ const MovieItem = ({id,title,remove,overview,watchLater,nextMovie,poster_path,lo
     return (
 
       <Wrapper  >
+<<<<<<< HEAD
          <Swipeable  onSwipe={handleOnSwipe} >
               <Button  style={trans}>
                 <Front>
@@ -152,6 +192,20 @@ const MovieItem = ({id,title,remove,overview,watchLater,nextMovie,poster_path,lo
           </BackImage> 
 
        
+=======
+         <Swipeable   onSwipe={handleOnSwipe} >
+              <Button ref={scroll}>
+                  <Img src={poster_path} alt={title} />
+                  <About>
+                    <h1>{original_title}</h1>
+                    <InfoOutlinedIcon className="info" onClick={onClick}/>
+                  </About>
+                  <MovieDescription/>
+              </Button>
+          </Swipeable>
+
+
+>>>>>>> a9cc5e1ba9c1f2c12649b699dc43c939b768a611
        </Wrapper>
 
 

@@ -12,6 +12,7 @@ export const AsideContant = styled(animated.div)`
 export const MobileView = styled(animated.div)`
   display:flex;
   width:300vw;
+<<<<<<< HEAD
 `
 export const Button = styled(animated.button)`
   position:relative;
@@ -25,3 +26,6 @@ export const Button = styled(animated.button)`
   transform-style: preserve-3d;
 `
 
+=======
+`
+>>>>>>> a9cc5e1ba9c1f2c12649b699dc43c939b768a611

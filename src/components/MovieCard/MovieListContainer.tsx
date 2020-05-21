@@ -45,8 +45,13 @@ function MovieListContainer({getVideoThunk,getActorsThunk,page,notFound,isLoadin
     {/* {list} */}
  
 
+<<<<<<< HEAD
             {/* <MovieItem {...movies[1]} loading={isLoading} nextImage={nextImage} remove={removeMovieAC} watchLater={addToWatchListAC}/> */}
             <MovieItem {...movies[0]} nextMovie={nextMovie} loading={isLoading} remove={removeMovieAC} watchLater={addToWatchListAC}/>
+=======
+            <MovieItem {...movies[1]} loading={isLoading} nextImage={nextImage} remove={removeMovieAC} watchLater={addToWatchListAC}/>
+            <MovieItem {...movies[0]} loading={isLoading} nextImage={nextImage} remove={removeMovieAC} watchLater={addToWatchListAC}/>
+>>>>>>> a9cc5e1ba9c1f2c12649b699dc43c939b768a611
          </Some>
         )  
 }
