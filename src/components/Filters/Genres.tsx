@@ -30,7 +30,7 @@ function Genres({genres,filters,setFilters}:any) {
 
 
     return (
-        <div>
+        <>
             <div>  
                 {our}
             </div>
@@ -38,7 +38,7 @@ function Genres({genres,filters,setFilters}:any) {
             <div>
                 {checkboxes}
             </div>
-        </div>
+        </>
     )
 }
 

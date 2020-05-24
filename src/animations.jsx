@@ -12,12 +12,12 @@ export const AsideContant = styled(animated.div)`
 export const MobileView = styled(animated.div)`
   display:flex;
   width:300vw;
-<<<<<<< HEAD
 `
 export const Button = styled(animated.button)`
   position:relative;
   width:100%;
-  height:100%;
+  height:100vh;
+  max-height:100%;
   border-radius:20px;
   overflow: visible;
   padding:0;
@@ -26,6 +26,3 @@ export const Button = styled(animated.button)`
   transform-style: preserve-3d;
 `
 
-=======
-`
->>>>>>> a9cc5e1ba9c1f2c12649b699dc43c939b768a611

@@ -7,6 +7,7 @@ import Img from '../common/Img';
 
 const Wrapper = styled.div`
     position:relative;
+    margin:1rem;
     .character{
         position:absolute;
         width:100%;
@@ -20,11 +21,7 @@ const Wrapper = styled.div`
         }
     }
 `
-<<<<<<< HEAD
 const Actors = React.memo(({cast,index,handleRight,handleLeft}:any) => {
-=======
-function Actors({cast,index,handleRight,handleLeft}:any) {
->>>>>>> a9cc5e1ba9c1f2c12649b699dc43c939b768a611
 
     const config = {
         trackTouch: true,                      // track touch input
@@ -60,19 +57,11 @@ function ActorsContainer({cast}:any) {
         setIndex(0)
     },[cast])
 
-<<<<<<< HEAD
     const handleLeft = (e:any) => {
-=======
-    const handleLeft = () => {
->>>>>>> a9cc5e1ba9c1f2c12649b699dc43c939b768a611
       setIndex((index+1) % cast.length)
     }
 
     const handleRight = (e:any) => {
-<<<<<<< HEAD
-=======
-        console.log(e)
->>>>>>> a9cc5e1ba9c1f2c12649b699dc43c939b768a611
         index === 0 ? setIndex(cast.length -1) : setIndex((index-1) % cast.length)
     }
     return cast ? <Actors cast={cast} index={index} handleLeft={handleLeft} handleRight={handleRight}/> : null

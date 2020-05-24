@@ -2,14 +2,13 @@ import React, {   useEffect, useState} from 'react';
 import WatchLater from './components/WatchLater/WatchLaterContainer'
 import FiltersContainer from './components/Filters/FiltersContainer'
 import MovieCardContainer from './components/MovieCard/MovieListContainer'
-import { getGenresThunk} from './redux/reducers/filterReducer'
-import { connect } from 'react-redux';
 import {useSpring} from 'react-spring'
 import styled from 'styled-components';
 import {AsideContant,MobileView} from './animations'
 import { Navigation } from './styles';
 import ListIcon from '@material-ui/icons/List';
 import MovieFilterIcon from '@material-ui/icons/MovieFilter';
+
 const Navigationn = styled.div`
   display:flex;
   padding:0.5rem;
@@ -64,12 +63,9 @@ const Main = styled.div`
 function App({getGenresThunk}:any) {
   const [clear,setClear] = useState("-100vw");
   const [active,setActive] = useState(true)
-  const [filters,setFilters] = useState(false)
   const [size,setSize] = useState(window.innerWidth);
 
-  useEffect(()=>{
-    getGenresThunk()
-  },[]);
+
 
   useEffect(()=>{
     const resize = ()=>{
@@ -98,8 +94,8 @@ function App({getGenresThunk}:any) {
           <>
             <Aside>
               <Navigationn> 
-                <h1 onClick={handleWatchLaterShow}>watch Later</h1>
-                <h1 onClick={handleFiltersShow}>filters</h1>
+                <h1 onClick={handleWatchLaterShow}>Watch Later</h1>
+                <h1 onClick={handleFiltersShow}>Filters</h1>
               </Navigationn>
               <AsideContant style={listTranslate}>
                 <WatchLater/>
@@ -128,4 +124,4 @@ function App({getGenresThunk}:any) {
   );
 }
 
-export default connect(null,{getGenresThunk})(App)
+export default React.memo(App)

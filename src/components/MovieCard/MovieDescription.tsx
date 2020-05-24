@@ -3,7 +3,6 @@ import Video from './Video'
 import ActorsContainer from './Actors'
 import { getFirstMovie, getDirectors } from '../../selectors'
 import { connect } from 'react-redux'
-import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
 import { getVideoThunk,getActorsThunk } from '../../redux/reducers/movieReducer'
@@ -23,13 +22,6 @@ interface MovieDescription{
 }
 
 const Wrap = styled.div`
-<<<<<<< HEAD
-=======
-  position:relative;
-  left:0;
-  bottom:0;
-  /* overflow:hidden; */
->>>>>>> a9cc5e1ba9c1f2c12649b699dc43c939b768a611
   font-size: 1rem;
   max-width: 100%;
   padding:0 1rem;
@@ -42,31 +34,13 @@ const Wrap = styled.div`
       transform:translateX(-50%);
   }
 `
-<<<<<<< HEAD
 const  MovieDescription = ({movie:{release_date,budget,revenue,runtime,genres,overview,vote_average},directors,flipBack}:MovieDescription) => {
-=======
-function MovieDescription({movie:{release_date,budget,revenue,runtime,genres,overview,vote_average},directors}:MovieDescription) {
->>>>>>> a9cc5e1ba9c1f2c12649b699dc43c939b768a611
     const directorList = directors ?  directors.map((x:any) => x.name).join(',') : null
     const genresList = genres ?  genres.map((x:any) => x.name).join(',') : null
 
     return (
             <Wrap>
-<<<<<<< HEAD
                 <KeyboardArrowUpIcon onClick={()=>flipBack(false)}/>
-=======
-                <Link to="/"><KeyboardArrowUpIcon/></Link>
-                
-            <div > 
-                <div>Rate : {vote_average}</div>   
-                {release_date && <div>Year: {release_date?.split('-')[0]}</div>}
-                {budget !== 0 && 
-                 <>
-                  <div>Budget: {`${budget}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")}$</div>
-                  {revenue !== 0 && <div>Revenue: {`${revenue}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")}$</div>}
-                 </>}
-                
->>>>>>> a9cc5e1ba9c1f2c12649b699dc43c939b768a611
                 
                 <div > 
                     <div>Rate : {vote_average}</div>   
@@ -88,7 +62,6 @@ function MovieDescription({movie:{release_date,budget,revenue,runtime,genres,ove
                <ActorsContainer/>
                <Video/>
             </Wrap>
-       
     )
 }
 const mapStateToProps = (store:any) => ({
@@ -96,19 +69,12 @@ const mapStateToProps = (store:any) => ({
     directors:getDirectors(store)
 })
 
-<<<<<<< HEAD
 const MovieDescriptionContainer = ({getVideoThunk,getActorsThunk,directors,flipBack,movie}:any) => {
     useEffect(() => {
         getActorsThunk(movie.id);
         getVideoThunk(movie.id);
-    }, [movie])
+    },[movie])
     if (!movie) return null
     return <MovieDescription movie={movie} flipBack={flipBack} directors={directors}/>
-=======
-const MovieDescriptionContainer = ({directors,movie}:any) => {
-    
-    if (!movie.length) return null
-    return <MovieDescription movie={movie[0]} directors={directors}/>
->>>>>>> a9cc5e1ba9c1f2c12649b699dc43c939b768a611
 }
 export default connect(mapStateToProps,{getActorsThunk,getVideoThunk})(React.memo(MovieDescriptionContainer))

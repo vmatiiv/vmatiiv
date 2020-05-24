@@ -37,10 +37,8 @@ const Pad = styled.div`
 `
 function Filters ({blocklist,setClear,filters,setFilters,getMovieThunk,genres}:IFilters) {
     
-    const [submitted,setSubmitted] = useState(false)
-    const onSubmit = (e:any) => {
+    const onSubmit = () => {
         if(navigator.onLine) getMovieThunk(blocklist,1,filters);
-        setSubmitted(true)
         try{
             setClear("-100vw");
         }catch{}
