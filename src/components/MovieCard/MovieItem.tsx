@@ -31,7 +31,8 @@ const Wrapper = styled.div`
   overflow:visible;
 `
 
-const About = styled.div`
+const About = styled.div<{flip:boolean}>`
+
    background-color:rgba(0,0,0,0.6);
    width:100%;
    position:absolute;
@@ -40,7 +41,7 @@ const About = styled.div`
    bottom:0;
    left:0;
    height:10%;
-   display:flex;
+   display:${props => props.flip ? 'none' : 'flex'};
    justify-content:space-between;
    .info{
       padding-right:2rem;
@@ -90,7 +91,7 @@ const MovieItem = ({id,title,remove,overview,watchLater,poster_path,loading,orig
 
 
     const trans = useSpring({
-      transform: `rotateY(${!flip? '0' : '180'}deg)`,
+      transform: `rotateY(${!flip ? '0' : '180'}deg) `,
       config:{
         duration:600
       }
@@ -102,8 +103,13 @@ const MovieItem = ({id,title,remove,overview,watchLater,poster_path,loading,orig
     }
     const swiped = (e:any) =>{
 
-      if(e.deltaX < -200) addToLater()
-      else if(e.deltaX > 200) remove(id)
+      if(e.deltaX < -200) {
+        addToLater()
+      }
+      else if(e.deltaX > 200) {
+
+        remove(id)
+      }
       else but.current.style.transform = `translateX(${0}px) rotate(${0}deg)` 
    
     }
@@ -127,7 +133,7 @@ const MovieItem = ({id,title,remove,overview,watchLater,poster_path,loading,orig
               <Button ref={but} style={trans} >
                 <Front {...handlers}>
                   <Img src={poster_path} alt={title} />
-                    <About>
+                    <About flip={flip}>
                       <h1>{title}</h1>
                       <InfoOutlinedIcon className="info" onClick={onClick}/>
                     </About>
