@@ -61,7 +61,6 @@ export const removeMovieAC = (id:number) => ({type:REMOVE_MOVIE,payload:id})
 
 const getActorsAC = (actors:any) => ({type:GET_ACTORS,payload:actors})
 export const getActorsThunk = (id:number) => async (dispatch:Dispatch) => {
-    console.log(id)
     try {
         const actors = await getCredits(id);
         const filteredList = 
@@ -117,7 +116,6 @@ export const getMovieThunk = (blocklist:[number],page?:any,filters?:any) => asyn
         Promise.all(list).then(filteredList=>dispatch(getMoviesAC({resultPage,filteredList})))
             
     } catch (error) {
-        console.log(error)
         dispatch(loadingAC(false))
     }
     
@@ -141,7 +139,6 @@ export const getMoviesWithFiltersThunk = (blocklist:[number],page?:any,filters?:
         const resultPage =  movies.data.page;
         const list =  movies.data.results
           .filter((x:any) => {
-              console.log(x);
               return !blocklist.includes(x.id) && x.poster_path
           })
           .map(async (x:any) =>{
@@ -151,7 +148,6 @@ export const getMoviesWithFiltersThunk = (blocklist:[number],page?:any,filters?:
         Promise.all(list).then(filteredList=>dispatch(getMoviesWithFiltersAC({resultPage,filteredList})))
             
     } catch (error) {
-        console.log(error)
         dispatch(loadingAC(false))
     }
     
