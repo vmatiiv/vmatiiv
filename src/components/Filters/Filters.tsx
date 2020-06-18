@@ -24,6 +24,7 @@ const Wraper = styled.div`
     order:3;
     background-color:white;
     width:50%;
+    overflow-x:hidden;
     height:95vh;
     @media (max-width:${props => props.theme.media.md}){
         background-color: ${props => props.theme.colors.mainBackground};
