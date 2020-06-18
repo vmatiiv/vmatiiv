@@ -137,10 +137,12 @@ export const getMoviesWithFiltersThunk = (blocklist:[number],page?:any,filters?:
         if(page > movies.data.total_pages){
             return dispatch(setNotFound())
         }
+
         const resultPage =  movies.data.page;
         const list =  movies.data.results
           .filter((x:any) => {
-              return !blocklist.includes(x.id)
+              console.log(x);
+              return !blocklist.includes(x.id) && x.poster_path
           })
           .map(async (x:any) =>{
               const z = await getMovieDetails(x.id); 

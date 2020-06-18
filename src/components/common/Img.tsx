@@ -1,6 +1,5 @@
 import React from 'react'
 import styled from 'styled-components';
-import alternative from '../../alternative.jpg'
 import ProgressiveImage from 'react-progressive-image';
 
 
@@ -23,14 +22,11 @@ interface IImg {
 function Img({src,alt,maxWidth}:IImg) {
     const imgPath = `http://image.tmdb.org/t/p/w400${src}`
     const tinyImg=  `http://image.tmdb.org/t/p/w200${src}`
-    const onError = (e:any) => {
-        e.target.src = alternative;
-      }
-    
+
     return (
         <ProgressiveImage src={imgPath} placeholder={tinyImg}>
 
-            {(src:string,loading:boolean) => <Image  onError={onError} src={src} maxWidth={maxWidth} isLoading={loading} alt={alt}/>}
+            {(src:string,loading:boolean) => <Image src={src} maxWidth={maxWidth} isLoading={loading} alt={alt}/>}
 
         </ProgressiveImage>
   )

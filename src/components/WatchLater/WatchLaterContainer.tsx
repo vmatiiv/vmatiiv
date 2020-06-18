@@ -11,6 +11,7 @@ const Later = styled.div`
   height:100%;
   width:50%;
   overflow-y:auto;
+  overflow-x:hidden;
   background-color:white;
   @media (max-width:${props => props.theme.media.md}){
         background-color: ${props => props.theme.colors.mainBackground};
