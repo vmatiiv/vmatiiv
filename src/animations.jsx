@@ -6,7 +6,8 @@ export const AsideContant = styled(animated.div)`
   height:100%;
   width:200%;
   display:flex;
-  overflow:auto;
+  overflow-x:hidden;
+  overflow-y:auto;
   z-index:123;
 `;
 export const MobileView = styled(animated.div)`
