@@ -97,7 +97,6 @@ const MovieItem = ({id,title,remove,overview,watchLater,poster_path,loading,orig
       }
     })
     const swiping = (e:any) => {
-      const initial = e.initial[0]
       const transform = e.deltaX < 0 ? e.absX : -e.absX;
       but.current.style.transform = `translateX(${transform}px) rotate(${transform/10}deg)`
     }
