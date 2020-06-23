@@ -5,7 +5,6 @@ import {getMovieThunk,removeMovieAC} from '../../redux/reducers/movieReducer'
 import {addToWatchListAC} from '../../redux/reducers/watchLaterReducer'
 import MovieItem from './MovieItem'
 import styled from 'styled-components'
-import Loader from '../common/Loader'
 
 const Some = styled.div`
     position:relative;
