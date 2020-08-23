@@ -10,8 +10,8 @@ import Loader from '../common/Loader'
 
 function FiltersContainer({getGenresThunk,blocklist,setClear,filters,setFiltersAC,genres,getMoviesWithFiltersThunk}:any) {
     useEffect(()=>{
-        getGenresThunk()
-      },[genres]);
+        getGenresThunk();
+      },[]);
    return (  <>
         { !!genres ? <Filters setClear={setClear} blocklist={blocklist} filters={filters}  getMovieThunk={getMoviesWithFiltersThunk} setFilters={setFiltersAC}  genres={genres}/> : <Loader/>}
         </>

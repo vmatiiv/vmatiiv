@@ -14,8 +14,12 @@ const Navigationn = styled.div`
   padding:0.5rem;
   justify-content:space-around;
   align-items:center;
+  
   height:5%;
   background:linear-gradient(262deg, #ff7854, #fd267d);
+  & h1{
+    cursor: pointer;
+  }
 `
 
 const Wrapper = styled.div` 

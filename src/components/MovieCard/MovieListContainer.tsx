@@ -31,7 +31,6 @@ function MovieListContainer({length,page,notFound,isLoading,blocklist,movies,fil
     },[length])
 
 
-
     if(!navigator.onLine) return <Empty><h1>no internet connection</h1></Empty> 
     if(notFound) return <Empty><h1>I can`t find movie by your filters, try to change it</h1></Empty>
     if(!movies.length) return null
