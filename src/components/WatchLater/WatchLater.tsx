@@ -44,7 +44,7 @@ function WatchLater({movies,remove}:any) {
     })
 
     const list = movies.map((x:any) => 
-        <div key={x.id}>
+        <div style={{position:'relative'}} key={x.id}>
             <SwipeableListItem  swipeStartThreshold={20} threshold={0.25} swipeRight={swipeRight(x.id)} >
                 <ListItem >
                     <Img  src={x.poster_path}  alt={x.title} maxWidth={"100px"}/>

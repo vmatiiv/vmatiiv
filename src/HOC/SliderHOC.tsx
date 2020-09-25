@@ -13,7 +13,7 @@ interface ISliderHOC {
 const useStyles = makeStyles({
   root:{
     width:"90%",
-    marginTop:"2rem"
+    marginTop:"0.5rem"
 
   }
 })

@@ -34,7 +34,7 @@ const Wraper = styled.div`
 `
 
 const Pad = styled.div`
-    padding:1rem 0.5rem;
+    padding:1rem;
 `
 function Filters ({blocklist,setClear,filters,setFilters,getMovieThunk,genres}:IFilters) {
     
